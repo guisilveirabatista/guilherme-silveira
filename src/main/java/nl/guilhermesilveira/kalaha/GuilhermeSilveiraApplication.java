@@ -1,4 +1,4 @@
-package nl.guisilveira.guilhermesilveira;
+package nl.guilhermesilveira.kalaha;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
