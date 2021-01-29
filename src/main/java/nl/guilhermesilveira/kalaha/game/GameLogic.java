@@ -22,8 +22,10 @@ import nl.guilhermesilveira.kalaha.model.User;
 @Component
 public class GameLogic implements IGameLogic {
 
-	private static final int BOARD_SIZE = 14;
-	private static final int INITIAL_STONES = 6;
+	public static final int BOARD_SIZE = 14;
+	public static final int INITIAL_STONES = 6;
+	public static final int PLAYER1 = 1;
+	public static final int PLAYER2 = 2;
 
 	private Board board;
 	private Pit currentPit;
@@ -60,14 +62,14 @@ public class GameLogic implements IGameLogic {
 	@Override
 	public Game makeMove(Game game, Move move) throws GameException {
 
-		if (isGameOver()) {
-			throw new GameException("Game Over!");
-		}
-
-		int selectedPitNumber = move.getSelectedPit();
-
 		// Load game from passed game state
 		this.board = Board.loadBoard(game.getPitsState());
+
+//		if (isGameOver()) {
+//			throw new GameException("Game Over!");
+//		}
+
+		int selectedPitNumber = move.getSelectedPit();
 		this.currentPit = this.board.getPits().get(selectedPitNumber);
 		this.currentPlayer = getPlayerFromStatus(game.getGameStatus());
 		this.player1Points = game.getPlayer1Points();
@@ -107,6 +109,11 @@ public class GameLogic implements IGameLogic {
 	}
 
 	private void isLegalMove(Game game) throws GameException {
+
+		if (this.currentPlayer != PLAYER1 && this.currentPlayer != PLAYER2) {
+			throw new GameException("Player number invalid!");
+		}
+
 		if (this.currentPit.getPlayer() != this.currentPlayer) {
 			throw new GameException(
 					"This move is invalid! It's player's " + this.getPlayerFromStatus(game.getGameStatus()) + " turn.");
@@ -128,22 +135,32 @@ public class GameLogic implements IGameLogic {
 			hand--;
 		}
 
-		checkStealStones();
+		if (canStealStones()) {
+			stealStones();
+		}
 	}
 
-	private void checkStealStones() {
+	private boolean canStealStones() {
 		if (this.currentPit.countStones() > 1 || this.currentPit.isKalaha()) {
-			return;
+			return false;
 		}
+		Pit oppositePit = this.board.getOppositePit(this.currentPit);
+		if (!oppositePit.isOpponentsPit(this.currentPlayer)) {
+			return false;
+		}
+		return true;
+	}
 
+	private void stealStones() {
 		int stolenStones = 0;
 
 		// Grab all stones from current pit
 		stolenStones = this.currentPit.grabAllStones();
 
-		// Grab all stones from opposite pit
+		// Grab all stones from opposite pit if opposite pit is opponents pit
+
 		Pit oppositePit = this.board.getOppositePit(this.currentPit);
-		stolenStones = oppositePit.grabAllStones();
+		stolenStones += oppositePit.grabAllStones();
 
 		// Sow all the stones stolen in the current player's Kalaha
 		Pit currentPlayersKalaha = this.board.getPlayerKalaha(this.currentPlayer);
@@ -160,6 +177,7 @@ public class GameLogic implements IGameLogic {
 			this.gameStatus = getNextPlayer(this.currentPlayer);
 		}
 		if (isGameOver()) {
+			endGame();
 			this.gameStatus = getGameEndResult();
 		}
 	}
@@ -185,18 +203,18 @@ public class GameLogic implements IGameLogic {
 	private boolean isGameOver() {
 		boolean gameOver = false;
 
-		gameOver = checkImpossibleToWin();
+		gameOver = isImpossibleToWin();
 
-		gameOver = checkAllFieldEmpty();
+		gameOver = isOnePlayerFieldsEmpty();
 
 		return gameOver;
 	}
 
-	private boolean checkImpossibleToWin() {
+	private boolean isImpossibleToWin() {
 		int stonesOnField = this.board.getPits().stream().filter((p) -> !p.isKalaha()).map((p) -> p.countStones())
 				.reduce(0, (x, y) -> x + y);
-		int kalahaPlayer1 = this.board.getPlayerKalaha(1).countStones();
-		int kalahaPlayer2 = this.board.getPlayerKalaha(2).countStones();
+		int kalahaPlayer1 = this.board.getPlayerKalaha(PLAYER1).countStones();
+		int kalahaPlayer2 = this.board.getPlayerKalaha(PLAYER2).countStones();
 
 		// impossible for Player 2
 		if (kalahaPlayer1 > (stonesOnField + kalahaPlayer2)) {
@@ -211,14 +229,47 @@ public class GameLogic implements IGameLogic {
 		return false;
 	}
 
-	private boolean checkAllFieldEmpty() {
-		int stonesOnField = this.board.getPits().stream().filter((p) -> !p.isKalaha()).mapToInt(Pit::getStones).sum();
-
-		if (stonesOnField == 0)
-			return true;
-
-		return false;
+	private boolean isOnePlayerFieldsEmpty() {
+		boolean gameOver = false;
+		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1)
+				.mapToInt(Pit::getStones).sum();
+		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2)
+				.mapToInt(Pit::getStones).sum();
+		if (stonesOnFieldP1 == 0) {
+			gameOver = true;
+		}
+		if (stonesOnFieldP2 == 0) {
+			gameOver = true;
+		}
+		return gameOver;
 	}
+
+	public void endGame() {
+		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1).mapToInt(Pit::getStones).sum();
+		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2).mapToInt(Pit::getStones).sum();
+		
+		this.board.getPlayerKalaha(PLAYER1).add(stonesOnFieldP1);
+		this.board.getPlayerKalaha(PLAYER2).add(stonesOnFieldP2);
+		
+		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1).forEach(Pit::empty);
+		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2).forEach(Pit::empty);
+	}
+
+//	public void grabAllStonesLeftAndPutThemInKalaha(int player) {
+//		int stonesToAdd = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == player)
+//				.mapToInt(p -> p.grabAllStones()).sum();
+//		System.out.println(stonesToAdd);
+//		this.board.getPlayerKalaha(player).add(stonesToAdd);
+//	}
+
+//	private boolean checkAllFieldsEmpty() {
+//		int stonesOnField = this.board.getPits().stream().filter((p) -> !p.isKalaha()).mapToInt(Pit::getStones).sum();
+//
+//		if (stonesOnField == 0)
+//			return true;
+//
+//		return false;
+//	}
 
 	private int getPlayerFromStatus(GameStatus gameStatus) {
 		return gameStatus == GameStatus.Player1Turn ? 1 : 2;
