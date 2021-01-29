@@ -34,7 +34,7 @@ public class Board {
 
 	public void assignKalahas() {
 		// Kalaha Player 1
-		Pit kalahaPlayer1 = this.pits.get(0);
+		Pit kalahaPlayer1 = this.pits.get((this.pits.size() / 2) - 1);
 		kalahaPlayer1.setPlayer(1);
 		kalahaPlayer1.setIsKalaha(true);
 		kalahaPlayer1.setStones(0);
@@ -51,9 +51,9 @@ public class Board {
 		int halfPits = (this.pits.size() / 2);
 
 		// Player 1
-		this.pits.subList(0, halfPits).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(2));
+		this.pits.subList(0, halfPits).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(1));
 		// Player 2
-		this.pits.subList(halfPits, this.pits.size()).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(1));
+		this.pits.subList(halfPits, this.pits.size()).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(2));
 	}
 
 	public void pourStones(int stones) {
@@ -80,10 +80,11 @@ public class Board {
 
 		Pit oppositePit = null;
 		int currentIndex = this.pits.indexOf(currentPit);
-		int oppositeIndex = this.pits.size() - currentIndex;
+		int oppositeIndex = (this.pits.size() - 2) - currentIndex;
 		oppositePit = this.pits.get(oppositeIndex);
 		return oppositePit;
 	}
+
 
 	public Pit getPlayerKalaha(int player) {
 		return this.pits.stream().filter(p -> p.getPlayer() == player && p.isKalaha() == true).findFirst().orElse(null);

@@ -17,6 +17,12 @@ public class Pit {
 		this.stones = stones;
 	}
 
+	public Pit(int stones, boolean isKalaha, int player) {
+		this.stones = stones;
+		this.isKalaha = isKalaha;
+		this.player = player;
+	}
+
 	public int getStones() {
 		return stones;
 	}
@@ -51,6 +57,10 @@ public class Pit {
 		this.stones += stones;
 	}
 
+	public void empty() {
+		this.stones = 0;
+	}
+
 	public int countStones() {
 		return this.getStones();
 	}
@@ -66,6 +76,10 @@ public class Pit {
 
 	public boolean isOpponentsKalaha(int currentPlayer) {
 		return this.isKalaha && this.player != currentPlayer ? true : false;
+	}
+
+	public boolean isOpponentsPit(int currentPlayer) {
+		return this.player != currentPlayer ? true : false;
 	}
 
 }
