@@ -9,7 +9,6 @@ import nl.guilhermesilveira.kalaha.model.Game;
 import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Move;
 import nl.guilhermesilveira.kalaha.model.Pit;
-import nl.guilhermesilveira.kalaha.model.User;
 
 //TODO IMPLEMENT EXCEPTIONS
 
@@ -22,35 +21,34 @@ import nl.guilhermesilveira.kalaha.model.User;
 @Component
 public class GameLogic implements IGameLogic {
 
-	public static final int BOARD_SIZE = 14;
-	public static final int INITIAL_STONES = 6;
 	public static final int PLAYER1 = 1;
 	public static final int PLAYER2 = 2;
+	public static final int BOARD_SIZE = 14;
+	public static final int INITIAL_STONES = 6;
 
 	private Board board;
 	private Pit currentPit;
+	private int turnNumber;
 	private int currentPlayer;
 	private int player1Points;
 	private int player2Points;
-	private int turnNumber;
 	private GameStatus gameStatus;
 
 	@Override
-	public Game newGame(User user) {
+	public Game newGame() {
 
 		this.board = new Board(BOARD_SIZE, INITIAL_STONES);
 
 		Game game = new Game();
-		game.setUser(user);
+		game.setTurnNumber(1);
 		game.setPlayer1Points(0);
 		game.setPlayer2Points(0);
+		game.setCreated(new Date());
 		game.setLastSelectedPit(null);
-		game.setPitsState(this.board.getPits());
-		game.setGameStatus(GameStatus.Player1Turn);
-		game.setTurnNumber(1);
 		game.setBoardSize(BOARD_SIZE);
 		game.setIntialStones(INITIAL_STONES);
-		game.setCreated(new Date());
+		game.setPitsState(this.board.getPits());
+		game.setGameStatus(GameStatus.Player1Turn);
 
 		return game;
 	}
@@ -64,18 +62,16 @@ public class GameLogic implements IGameLogic {
 
 		// Load game from passed game state
 		this.board = Board.loadBoard(game.getPitsState());
-
-//		if (isGameOver()) {
-//			throw new GameException("Game Over!");
-//		}
-
-		int selectedPitNumber = move.getSelectedPit();
-		this.currentPit = this.board.getPits().get(selectedPitNumber);
+		this.currentPit = this.board.getPits().get(move.getSelectedPit());
 		this.currentPlayer = getPlayerFromStatus(game.getGameStatus());
 		this.player1Points = game.getPlayer1Points();
 		this.player2Points = game.getPlayer2Points();
 		this.turnNumber = game.getTurnNumber();
 		this.gameStatus = game.getGameStatus();
+
+//		if (isGameOver()) {
+//			throw new GameException("Game Over!");
+//		}
 
 		// Validates if turn is valid for the player
 		isLegalMove(game);
@@ -84,9 +80,7 @@ public class GameLogic implements IGameLogic {
 
 		updatePlayersScore();
 
-		changeGameState();
-
-		this.turnNumber++;
+		changeGameTurn();
 
 		game = updateGame(game);
 
@@ -158,7 +152,6 @@ public class GameLogic implements IGameLogic {
 		stolenStones = this.currentPit.grabAllStones();
 
 		// Grab all stones from opposite pit if opposite pit is opponents pit
-
 		Pit oppositePit = this.board.getOppositePit(this.currentPit);
 		stolenStones += oppositePit.grabAllStones();
 
@@ -172,7 +165,7 @@ public class GameLogic implements IGameLogic {
 		this.player2Points = this.board.getPlayerKalaha(2).countStones();
 	}
 
-	private void changeGameState() {
+	private void changeGameTurn() {
 		if (!checkIsLastPitIsPlayerSKalaha()) {
 			this.gameStatus = getNextPlayer(this.currentPlayer);
 		}
@@ -180,6 +173,7 @@ public class GameLogic implements IGameLogic {
 			endGame();
 			this.gameStatus = getGameEndResult();
 		}
+		this.turnNumber++;
 	}
 
 	private GameStatus getNextPlayer(int player) {
@@ -199,15 +193,18 @@ public class GameLogic implements IGameLogic {
 		return this.currentPit.isPlayersKalaha(this.currentPlayer);
 	}
 
-	// TODO
 	private boolean isGameOver() {
-		boolean gameOver = false;
-
-		gameOver = isImpossibleToWin();
-
-		gameOver = isOnePlayerFieldsEmpty();
-
-		return gameOver;
+		if (this.gameStatus == GameStatus.Player1Wins || this.gameStatus == GameStatus.Player2Wins
+				|| this.gameStatus == GameStatus.Draw) {
+			return true;
+		}
+		if (isImpossibleToWin()) {
+			return true;
+		}
+		if (isOnePlayerFieldsEmpty()) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean isImpossibleToWin() {
@@ -230,46 +227,31 @@ public class GameLogic implements IGameLogic {
 	}
 
 	private boolean isOnePlayerFieldsEmpty() {
-		boolean gameOver = false;
 		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1)
 				.mapToInt(Pit::getStones).sum();
 		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2)
 				.mapToInt(Pit::getStones).sum();
 		if (stonesOnFieldP1 == 0) {
-			gameOver = true;
+			return true;
 		}
 		if (stonesOnFieldP2 == 0) {
-			gameOver = true;
+			return true;
 		}
-		return gameOver;
+		return false;
 	}
 
 	public void endGame() {
-		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1).mapToInt(Pit::getStones).sum();
-		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2).mapToInt(Pit::getStones).sum();
-		
+		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1)
+				.mapToInt(Pit::getStones).sum();
+		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2)
+				.mapToInt(Pit::getStones).sum();
+
 		this.board.getPlayerKalaha(PLAYER1).add(stonesOnFieldP1);
 		this.board.getPlayerKalaha(PLAYER2).add(stonesOnFieldP2);
-		
+
 		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1).forEach(Pit::empty);
 		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2).forEach(Pit::empty);
 	}
-
-//	public void grabAllStonesLeftAndPutThemInKalaha(int player) {
-//		int stonesToAdd = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == player)
-//				.mapToInt(p -> p.grabAllStones()).sum();
-//		System.out.println(stonesToAdd);
-//		this.board.getPlayerKalaha(player).add(stonesToAdd);
-//	}
-
-//	private boolean checkAllFieldsEmpty() {
-//		int stonesOnField = this.board.getPits().stream().filter((p) -> !p.isKalaha()).mapToInt(Pit::getStones).sum();
-//
-//		if (stonesOnField == 0)
-//			return true;
-//
-//		return false;
-//	}
 
 	private int getPlayerFromStatus(GameStatus gameStatus) {
 		return gameStatus == GameStatus.Player1Turn ? 1 : 2;

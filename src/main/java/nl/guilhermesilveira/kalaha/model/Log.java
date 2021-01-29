@@ -16,7 +16,7 @@ public class Log {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
-	private int id;
+	private Integer id;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -39,7 +39,7 @@ public class Log {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

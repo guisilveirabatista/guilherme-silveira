@@ -1,10 +1,18 @@
 package nl.guilhermesilveira.kalaha.form;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import nl.guilhermesilveira.kalaha.dto.MoveDto;
+
 public class MoveForm {
 
+	@NotNull
+	@Min(value = 1)
 	private Long gameId;
-	private Long userId;
-	private int selectedPit;
+	@NotNull
+	@Min(value = 0)
+	private Integer selectedPit;
 
 	public Long getGameId() {
 		return gameId;
@@ -14,20 +22,19 @@ public class MoveForm {
 		this.gameId = gameId;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public int getSelectedPit() {
+	public Integer getSelectedPit() {
 		return selectedPit;
 	}
 
-	public void setSelectedPit(int selectedPit) {
+	public void setSelectedPit(Integer selectedPit) {
 		this.selectedPit = selectedPit;
+	}
+
+	public MoveDto convertMoveFormToDto(MoveForm moveForm) {
+		MoveDto moveDto = new MoveDto();
+		moveDto.setGameId(moveForm.getGameId());
+		moveDto.setSelectedPit(moveForm.getSelectedPit());
+		return moveDto;
 	}
 
 }

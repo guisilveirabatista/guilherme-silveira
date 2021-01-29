@@ -6,8 +6,7 @@ public class MoveDto {
 
 	private Long gameId;
 	private Long userId;
-	private int playerNumber;
-	private int selectedPit;
+	private Integer selectedPit;
 
 	public Long getGameId() {
 		return gameId;
@@ -25,26 +24,17 @@ public class MoveDto {
 		this.userId = userId;
 	}
 
-	public int getPlayerNumber() {
-		return playerNumber;
-	}
-
-	public void setPlayerNumber(int playerNumber) {
-		this.playerNumber = playerNumber;
-	}
-
 	public int getSelectedPit() {
 		return selectedPit;
 	}
 
-	public void setSelectedPit(int selectedPit) {
+	public void setSelectedPit(Integer selectedPit) {
 		this.selectedPit = selectedPit;
 	}
 
 	public Move convertToMove() {
 		Move move = new Move();
 		move.setGameId(this.getGameId());
-		move.setUserId(this.getUserId());
 		move.setSelectedPit(this.getSelectedPit());
 		return move;
 	}

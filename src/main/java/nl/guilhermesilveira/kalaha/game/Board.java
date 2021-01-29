@@ -62,29 +62,22 @@ public class Board {
 
 	public Pit getNextPit(Pit currentPit) {
 		int indexCurrentPit = this.pits.indexOf(currentPit);
-		Pit nextPit = null;
 		if (indexCurrentPit == (this.pits.size() - 1)) {
-			nextPit = this.pits.get(0);
+			return this.pits.get(0);
 		} else {
-			nextPit = this.pits.get(indexCurrentPit + 1);
+			return this.pits.get(indexCurrentPit + 1);
 		}
-		return nextPit;
 	}
 
 	public Pit getOppositePit(Pit currentPit) {
-
 		// Check if pit is Kalaha
 		if (currentPit.isKalaha()) {
 			return null;
 		}
-
-		Pit oppositePit = null;
 		int currentIndex = this.pits.indexOf(currentPit);
 		int oppositeIndex = (this.pits.size() - 2) - currentIndex;
-		oppositePit = this.pits.get(oppositeIndex);
-		return oppositePit;
+		return this.pits.get(oppositeIndex);
 	}
-
 
 	public Pit getPlayerKalaha(int player) {
 		return this.pits.stream().filter(p -> p.getPlayer() == player && p.isKalaha() == true).findFirst().orElse(null);

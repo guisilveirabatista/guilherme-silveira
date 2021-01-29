@@ -1,6 +1,9 @@
 package nl.guilhermesilveira.kalaha.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 import nl.guilhermesilveira.kalaha.dto.GameDto;
 import nl.guilhermesilveira.kalaha.dto.MoveDto;
 import nl.guilhermesilveira.kalaha.dto.UserDto;
+import nl.guilhermesilveira.kalaha.exception.GameException;
+import nl.guilhermesilveira.kalaha.form.MoveForm;
 import nl.guilhermesilveira.kalaha.service.GameService;
 
 @RestController
@@ -26,40 +28,53 @@ public class GameController {
 
 	@GetMapping
 	@CrossOrigin(origins = "http://localhost:5500")
-	public GameDto newGame() {
+	public ResponseEntity<GameDto> newGame() {
 		UserDto userDto = new UserDto();
 		userDto.setId((long) 1);
 		try {
-			return this.gameService.newGame(userDto);
+			GameDto gameDto = this.gameService.newGame(userDto);
+			return ResponseEntity.ok(gameDto);
+//			return ResponseEntity.notFound().build();
+		} catch (GameException e) {
+			e.printStackTrace();
+			// Implement
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	@GetMapping("/load")
 	@CrossOrigin(origins = "http://localhost:5500")
-	public GameDto loadGame(Long id) {
+	public ResponseEntity<GameDto> loadGame(Long id) {
 		try {
-			return this.gameService.loadGame(id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			GameDto gameDto = this.gameService.loadGame(id);
+			return ResponseEntity.ok(gameDto);
+//			return ResponseEntity.notFound().build();
+		} catch (GameException e) {
 			e.printStackTrace();
+			// Implement
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	@PostMapping
 	@Transactional
 	@CrossOrigin(origins = "http://localhost:5500")
-	public GameDto makeMove(@RequestBody MoveDto moveDto) throws JsonMappingException, JsonProcessingException {
+	public ResponseEntity<GameDto> makeMove(@RequestBody @Valid MoveForm moveForm) {
 		try {
-			return this.gameService.makeMove(moveDto);
+			MoveDto moveDto = moveForm.convertMoveFormToDto(moveForm);
+			GameDto gameDto = this.gameService.makeMove(moveDto);
+			return ResponseEntity.ok(gameDto);
+//			return ResponseEntity.notFound().build();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 }
