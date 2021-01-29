@@ -1,4 +1,4 @@
-package nl.guisilveira.guilhermesilveira;
+package nl.guilhermesilveira.kalaha;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
