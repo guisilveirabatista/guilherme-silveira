@@ -36,8 +36,10 @@ public class GameService {
 			user = userOpt.get();
 		}
 
-		Game game = this.gameLogic.newGame(user);
+		Game game = this.gameLogic.newGame();
 
+		game.setUser(user);
+		
 		this.gameRepository.save(game);
 
 		return new GameDto(game);

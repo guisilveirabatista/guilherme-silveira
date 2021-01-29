@@ -28,7 +28,6 @@ public class GameTest {
 		Move move = new Move();
 		move.setGameId((long) 1);
 		move.setSelectedPit(5);
-		move.setPlayerNumber(1);
 
 		Game retorno = gameLogic.makeMove(game, move);
 
@@ -51,7 +50,6 @@ public class GameTest {
 		Move move = new Move();
 		move.setGameId((long) 1);
 		move.setSelectedPit(4);
-		move.setPlayerNumber(1);
 
 		game = gameLogic.makeMove(game, move);
 
@@ -74,7 +72,6 @@ public class GameTest {
 		Move move = new Move();
 		move.setGameId((long) 1);
 		move.setSelectedPit(10);
-		move.setPlayerNumber(2);
 
 		game = gameLogic.makeMove(game, move);
 

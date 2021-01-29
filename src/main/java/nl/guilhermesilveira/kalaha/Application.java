@@ -6,10 +6,10 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @SpringBootApplication
 @EnableSpringDataWebSupport
-public class GuilhermeSilveiraApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GuilhermeSilveiraApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

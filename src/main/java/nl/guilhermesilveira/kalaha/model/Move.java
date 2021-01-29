@@ -5,9 +5,7 @@ import java.util.Date;
 public class Move {
 
 	private Long gameId;
-	private Long userId;
-	private int playerNumber;
-	private int selectedPit;
+	private Integer selectedPit;
 	private Date date;
 
 	public Long getGameId() {
@@ -18,27 +16,11 @@ public class Move {
 		this.gameId = gameId;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public int getPlayerNumber() {
-		return playerNumber;
-	}
-
-	public void setPlayerNumber(int playerNumber) {
-		this.playerNumber = playerNumber;
-	}
-
-	public int getSelectedPit() {
+	public Integer getSelectedPit() {
 		return selectedPit;
 	}
 
-	public void setSelectedPit(int selectedPit) {
+	public void setSelectedPit(Integer selectedPit) {
 		this.selectedPit = selectedPit;
 	}
 
