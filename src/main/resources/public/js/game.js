@@ -120,6 +120,10 @@ allPits.forEach(pit => {
 		if (!this.classList.contains("pit-enabled")) {
 			return;
 		}
+		
+		if(parseInt(this.innerText) <= 0){
+			alert('Select a pit with stones!');
+		}
 
 		let index = this.getAttribute("data-index");
 

@@ -114,8 +114,7 @@ public class GameLogic implements IGameLogic {
 		}
 
 		if (this.currentPit.countStones() == 0) {
-			throw new GameException(
-					"This move is invalid! The pit selected is empty!");
+			throw new GameException("This move is invalid! The pit selected is empty!");
 		}
 	}
 
@@ -154,10 +153,14 @@ public class GameLogic implements IGameLogic {
 		int stolenStones = 0;
 
 		// Grab all stones from current pit
-		stolenStones = this.currentPit.grabAllStones();
 
-		// Grab all stones from opposite pit if opposite pit is opponents pit
+		// Grab all stones from opposite pit if opposite pit is opponents pit and it's
+		// not empty
 		Pit oppositePit = this.board.getOppositePit(this.currentPit);
+		if (oppositePit.countStones() == 0) {
+			return;
+		}
+		stolenStones += this.currentPit.grabAllStones();
 		stolenStones += oppositePit.grabAllStones();
 
 		// Sow all the stones stolen in the current player's Kalaha
