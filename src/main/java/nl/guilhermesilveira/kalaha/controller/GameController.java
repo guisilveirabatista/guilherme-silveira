@@ -36,11 +36,14 @@ public class GameController {
 			} else {
 				gameDto = this.gameService.newGame(userDto);
 			}
+
+			if (gameDto.getId() == null) {
+				return ResponseEntity.notFound().build();
+			}
+
 			return ResponseEntity.ok(gameDto);
-//			return ResponseEntity.notFound().build();
 		} catch (GameException e) {
 			e.printStackTrace();
-			// Implement
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
