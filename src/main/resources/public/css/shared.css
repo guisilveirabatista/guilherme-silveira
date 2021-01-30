@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Alladin';
+    src: url('font/aladdin.ttf');
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+    color: white;
+    text-shadow: 10px 10px 10px black;
+    font-family: 'Alladin';
+    font-size: 40px;
+    background-color: black;
+    background-image: url(/img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.game-title {
+    text-align: center;
+    font-size: 150px;
+    text-shadow: 10px 10px 10px black;
+}
+
+a:link {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 10px 10px 10px black;
+}
+
+a:active {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none;
+}
+
+.div-go-back {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+}
