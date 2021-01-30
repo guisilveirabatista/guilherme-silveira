@@ -12,8 +12,9 @@ const newGame = (userToken) => {
     });
 }
 
-const loadGame = (userToken, gameId) => {
-    return fetch(`http://localhost:8888/kalaha?id=${gameId}`, {
+const loadGame = (loadGameId) => {
+	let userToken = null;
+    return fetch(`http://localhost:8888/kalaha?id=${loadGameId}`, {
         method: 'get',
         // withCredentials: true,
         // credentials: 'include',

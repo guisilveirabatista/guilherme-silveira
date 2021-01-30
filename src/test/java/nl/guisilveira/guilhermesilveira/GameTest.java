@@ -19,25 +19,16 @@ public class GameTest {
 	private IGameLogic gameLogic = new GameLogic();
 
 	@Test
-	void testCorrectNumberStonesInKalahasUponGameOver() throws GameException {
+	void testValidNewGame() {
+		
+	}
 
-		int[] mockPits = { 0, 0, 0, 0, 0, 2, 11, 0, 3, 4, 0, 0, 0, 25 };
+	@Test
+	void testFirstMove() {
+		// Test empty selected pit first play
 
-		Game game = GameFactory.createGameFromMock(mockPits, GameStatus.Player1Turn);
+		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 
-		Move move = new Move();
-		move.setGameId((long) 1);
-		move.setSelectedPit(5);
-
-		Game retorno = gameLogic.makeMove(game, move);
-
-		List<Pit> pits = retorno.getPitsState();
-
-		// Check Kalaha 1
-		assertEquals(12, pits.get(6).countStones());
-
-		// Check Kalaha 2
-		assertEquals(33, pits.get(13).countStones());
 	}
 
 	@Test
@@ -82,6 +73,28 @@ public class GameTest {
 
 		// Check Kalaha 2
 		assertEquals(29, pits.get(13).countStones());
+	}
+
+	@Test
+	void testCorrectNumberStonesInKalahasUponGameOver() throws GameException {
+
+		int[] mockPits = { 0, 0, 0, 0, 0, 2, 11, 0, 3, 4, 0, 0, 0, 25 };
+
+		Game game = GameFactory.createGameFromMock(mockPits, GameStatus.Player1Turn);
+
+		Move move = new Move();
+		move.setGameId((long) 1);
+		move.setSelectedPit(5);
+
+		Game retorno = gameLogic.makeMove(game, move);
+
+		List<Pit> pits = retorno.getPitsState();
+
+		// Check Kalaha 1
+		assertEquals(12, pits.get(6).countStones());
+
+		// Check Kalaha 2
+		assertEquals(33, pits.get(13).countStones());
 	}
 
 }

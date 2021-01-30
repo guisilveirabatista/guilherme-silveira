@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,12 +26,16 @@ public class GameController {
 	private GameService gameService;
 
 	@GetMapping
-	@CrossOrigin(origins = "http://localhost:5500")
-	public ResponseEntity<GameDto> newGame() {
+	public ResponseEntity<GameDto> newGame(Long id) {
 		UserDto userDto = new UserDto();
+		GameDto gameDto = null;
 		userDto.setId((long) 1);
 		try {
-			GameDto gameDto = this.gameService.newGame(userDto);
+			if (id != null) {
+				gameDto = this.gameService.loadGame(id);
+			} else {
+				gameDto = this.gameService.newGame(userDto);
+			}
 			return ResponseEntity.ok(gameDto);
 //			return ResponseEntity.notFound().build();
 		} catch (GameException e) {
@@ -45,26 +48,24 @@ public class GameController {
 		}
 	}
 
-	@GetMapping("/load")
-	@CrossOrigin(origins = "http://localhost:5500")
-	public ResponseEntity<GameDto> loadGame(Long id) {
-		try {
-			GameDto gameDto = this.gameService.loadGame(id);
-			return ResponseEntity.ok(gameDto);
-//			return ResponseEntity.notFound().build();
-		} catch (GameException e) {
-			e.printStackTrace();
-			// Implement
-			return null;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+//	@GetMapping("/{id}")
+//	public ResponseEntity<GameDto> loadGame(@PathVariable Long id) {
+//		try {
+//			GameDto gameDto = this.gameService.loadGame(id);
+//			return ResponseEntity.ok(gameDto);
+////			return ResponseEntity.notFound().build();
+//		} catch (GameException e) {
+//			e.printStackTrace();
+//			// Implement
+//			return null;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	@PostMapping
 	@Transactional
-	@CrossOrigin(origins = "http://localhost:5500")
 	public ResponseEntity<GameDto> makeMove(@RequestBody @Valid MoveForm moveForm) {
 		try {
 			MoveDto moveDto = moveForm.convertMoveFormToDto(moveForm);

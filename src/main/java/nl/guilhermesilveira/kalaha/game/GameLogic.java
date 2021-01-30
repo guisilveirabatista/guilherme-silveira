@@ -112,6 +112,11 @@ public class GameLogic implements IGameLogic {
 			throw new GameException(
 					"This move is invalid! It's player's " + this.getPlayerFromStatus(game.getGameStatus()) + " turn.");
 		}
+
+		if (this.currentPit.countStones() == 0) {
+			throw new GameException(
+					"This move is invalid! The pit selected is empty!");
+		}
 	}
 
 	private void sowStones() {

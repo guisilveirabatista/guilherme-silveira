@@ -1,53 +1,44 @@
-/* @font-face {
-    font-family: 'Alladin';
-    src: url('font/aladdin.ttf');
-} */
-
-body {
-    /* font-family: 'Alladin'; */
-    font-size: 40px;
-    background-color: #6D6875;
-}
-
-.game-title{
-    /* font-size:200px; */
-    text-align: center;
-}
-
-.game-header{
+.game-header {
     overflow: auto;
 }
 
 .container {
-    /* margin-top: 15%; */
-    max-width: 1000px;
+    width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 20px;
+    background-color: rgb(255 164 27 / 25%);
+    box-shadow: 0.1rem 0.1rem 0 rgb(0 0 0 / 10%), 1rem 1rem 0 rgb(255 255 255 / 10%);
+    border-radius: 1rem;
+    padding: 10px;
 }
 
 .board {
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto;
+    grid-template-columns: 120px 120px 120px 120px 120px 120px 120px 120px;
     grid-gap: 5px;
     height: 300px;
-    /* justify-items: center; */
-    /* align-items: center; */
+    padding-top: 20px;
 }
 
 .pit {
-    background-color: #B5838D;
+    background: rgba(0, 0, 0, 0.3);
     text-align: center;
     font-size: 80px;
     text-align: center;
+    border-radius: 30px;
+    border: 5px solid rgba(0, 0, 0, 0.5);
 }
 
 .pit-enabled {
-    background-color: #FFCDB2;
     cursor: pointer;
+    animation: fade 2s linear infinite;
 }
 
-.kalaha {
-    background-color: #E5989B;
+.kalaha {}
+
+.kalaha-enabled {
+    animation: fade 2s linear infinite;
 }
 
 .kalaha-p1 {
@@ -59,4 +50,15 @@ body {
     grid-row: 1 / 3;
 }
 
-.stones {}
+.game-footer {
+    overflow: auto;
+    padding-top: 20px;
+}
+
+@keyframes fade {
+    0%, 100% {}
+    50% {
+        border-color: #fff;
+        border: 5px solid white;
+    }
+}

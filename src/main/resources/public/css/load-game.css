@@ -1,0 +1,26 @@
+.load-game {
+	margin: auto;
+	margin-top: 100px;
+	text-align: center;
+}
+
+input[type="text"] {
+	background: transparent;
+	border: 3px solid white;
+	border-radius: 30px;
+	font-size: 30px;
+	color: gold;
+}
+
+.btn-load-game {
+	border-style: none;
+	font-family: 'Alladin';
+	background: transparent;
+	color: white;
+	font-size: 40px;
+	cursor:pointer;
+}
+
+.btn-load-game:hover {
+	text-shadow: 10px 10px 10px black;
+}
