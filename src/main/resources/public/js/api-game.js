@@ -1,5 +1,5 @@
 const newGame = (userToken) => {
-    return fetch('http://localhost:8888/kalaha', {
+    return fetch('/kalaha', {
         method: 'get',
         // withCredentials: true,
         // credentials: 'include',
@@ -14,7 +14,7 @@ const newGame = (userToken) => {
 
 const loadGame = (loadGameId) => {
 	let userToken = null;
-    return fetch(`http://localhost:8888/kalaha?id=${loadGameId}`, {
+    return fetch(`/kalaha?id=${loadGameId}`, {
         method: 'get',
         // withCredentials: true,
         // credentials: 'include',
@@ -32,7 +32,7 @@ const makeMove = (userToken, gameId, selectedPit) => {
         gameId: gameId,
         selectedPit: selectedPit
     });
-    return fetch('http://localhost:8888/kalaha', {
+    return fetch('/kalaha', {
         method: 'post',
         // withCredentials: true,
         // credentials: 'include',

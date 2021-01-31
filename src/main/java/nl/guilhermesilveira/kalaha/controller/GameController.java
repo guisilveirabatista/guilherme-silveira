@@ -43,13 +43,8 @@ public class GameController {
 
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
-<<<<<<< Updated upstream
-			e.printStackTrace();
-			return null;
-=======
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(400).build();
->>>>>>> Stashed changes
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -79,13 +74,9 @@ public class GameController {
 			MoveDto moveDto = moveForm.convertMoveFormToDto(moveForm);
 			GameDto gameDto = this.gameService.makeMove(moveDto);
 			return ResponseEntity.ok(gameDto);
-<<<<<<< Updated upstream
-//			return ResponseEntity.notFound().build();
-=======
 		} catch (GameException e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(400).build();
->>>>>>> Stashed changes
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

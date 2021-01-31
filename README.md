@@ -1,7 +1,6 @@
-# Guilherme Silveira
+# About The Project
+[Kalaha Board Game](https://en.wikipedia.org/wiki/Kalah)
 
-<<<<<<< Updated upstream
-=======
 The goal of this project is to build a web application that runs the game "Kalaha", with all the game rules implemented on the back-end in Java.
 
 <img src="https://i.ibb.co/gDW4wwF/screenshot.png" data-canonical-src="https://i.ibb.co/gDW4wwF/screenshot.png" width="100%" />
@@ -44,6 +43,7 @@ Screenshot of the game
    ```sh
    http://localhost:8080
    ```
+
 4. Click on `New Game`
 
 ## Architecture
@@ -63,10 +63,21 @@ This project follows the MVC and Rest architectures. The structure is organised 
 
 This project uses JUnit to test the back-end logic, following the Test Driven Development Principles.  
 You can find the testing classes in the folder `root/src/test/java/nl/guilhermesilveira/kalaha`
+=======
+4. CLick on `New Game`
+
+## Architecture
+
+* The `config` package contains the HTTP Security configuration.
+* The `controller` package contains classes that handle HTTP requests.
+* The `model` package contains the entity classes.
+* The `form` and `dto` packages contain the classes used to map request parameters.
+* The `repository` package contains the repository interfaces that provide CRUD functionality to the entity classes.
+* The `security` package contains the classes responsible for user authentication.
+* The `service` package identifies the application layer that encapsulates the business logic, controls transactions, etc.
 
 ## Contact
 
 Guilherme Silveira - guisilveirabatista@gmail.com
 
 Project Link: [https://gitlab.com/bolcom/guilherme-silveira](https://github.com/your_username/repo_name)
->>>>>>> Stashed changes

@@ -13,14 +13,6 @@ import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Move;
 import nl.guilhermesilveira.kalaha.model.Pit;
 
-//TODO IMPLEMENT EXCEPTIONS
-
-//TODO IMPLEMENT TESTS
-
-//TODO IMPROVE CONSTRUCTORS OF CLASSES
-
-//TODO IMPLEMENT LOG
-
 @Component
 public class GameLogic implements IGameLogic {
 
@@ -82,9 +74,8 @@ public class GameLogic implements IGameLogic {
 
 		sowStones();
 
-<<<<<<< Updated upstream
-		updatePlayersScore();
-=======
+        updatePlayersScore();
+        
 		changeGameTurn();
 		
 		updatePlayersPoints();
@@ -92,11 +83,8 @@ public class GameLogic implements IGameLogic {
 		if (isGameOver()) {
 			endGame();
 			this.gameStatus = getGameEndResult();
-		}		
->>>>>>> Stashed changes
-
-		changeGameTurn();
-
+        }		
+        
 		game = updateGame(game);
 
 		return game;
@@ -177,17 +165,11 @@ public class GameLogic implements IGameLogic {
 		int stolenStones = 0;
 
 		// Grab all stones from current pit
+		stolenStones += this.currentPit.grabAllStones();
 
 		// Grab all stones from opposite pit if opposite pit is opponents pit and it's
 		// not empty
 		Pit oppositePit = this.board.getOppositePit(this.currentPit);
-<<<<<<< Updated upstream
-		if (oppositePit.countStones() == 0) {
-			return;
-		}
-		stolenStones += this.currentPit.grabAllStones();
-=======
->>>>>>> Stashed changes
 		stolenStones += oppositePit.grabAllStones();
 
 		// Sow all the stones stolen in the current player's Kalaha
@@ -195,14 +177,6 @@ public class GameLogic implements IGameLogic {
 		currentPlayersKalaha.add(stolenStones);
 	}
 
-<<<<<<< Updated upstream
-	private void updatePlayersScore() {
-		this.player1Points = this.board.getPlayerKalaha(1).countStones();
-		this.player2Points = this.board.getPlayerKalaha(2).countStones();
-	}
-
-=======
->>>>>>> Stashed changes
 	private void changeGameTurn() {
 		if (!checkIsLastPitIsPlayerSKalaha()) {
 			this.gameStatus = getNextPlayer(this.currentPlayer);
@@ -306,11 +280,11 @@ public class GameLogic implements IGameLogic {
 	}
 
 	private int getPlayerFromStatus(GameStatus gameStatus) {
-		return gameStatus == GameStatus.Player1Turn ? 1 : 2;
+		return gameStatus == GameStatus.Player1Turn ? GameLogic.PLAYER1 : GameLogic.PLAYER2;
 	}
 
 	private GameStatus getStatusNextPlayer(int player) {
-		return player == 1 ? GameStatus.Player2Turn : GameStatus.Player1Turn;
+		return player == GameLogic.PLAYER1 ? GameStatus.Player2Turn : GameStatus.Player1Turn;
 	}
 
 }
