@@ -1,10 +1,10 @@
-package nl.guisilveira.guilhermesilveira;
+package nl.guilhermesilveira.kalaha;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class GuilhermeSilveiraApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

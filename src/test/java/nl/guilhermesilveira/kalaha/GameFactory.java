@@ -1,4 +1,4 @@
-package nl.guisilveira.guilhermesilveira;
+package nl.guilhermesilveira.kalaha;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +11,7 @@ import nl.guilhermesilveira.kalaha.model.Pit;
 
 public class GameFactory {
 
-	public static Game createGameFromMock(int[] simplePitState, GameStatus gameStatus) {
+	public static Game createGame(int[] simplePitState, GameStatus gameStatus) {
 
 		List<Pit> pits = new ArrayList<Pit>();
 		
@@ -34,7 +34,7 @@ public class GameFactory {
 		game.setUser(null);
 		game.setPlayer1Points(0);
 		game.setPlayer2Points(0);
-		game.setLastSelectedPit("9");
+		game.setCurrentPit("");
 		game.setPitsState(board.getPits());
 		game.setGameStatus(gameStatus);
 		game.setTurnNumber(0);
