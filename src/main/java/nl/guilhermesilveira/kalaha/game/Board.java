@@ -35,14 +35,13 @@ public class Board {
 	public void assignKalahas() {
 		// Kalaha Player 1
 		Pit kalahaPlayer1 = this.pits.get((this.pits.size() / 2) - 1);
-		kalahaPlayer1.setPlayer(1);
+		kalahaPlayer1.setPlayer(GameLogic.PLAYER1);
 		kalahaPlayer1.setIsKalaha(true);
 		kalahaPlayer1.setStones(0);
 
 		// Kalaha Player 2
-//		Pit kalahaPlayer2 = this.pits.get(this.pits.size() / 2);
 		Pit kalahaPlayer2 = this.pits.get(this.pits.size() - 1);
-		kalahaPlayer2.setPlayer(2);
+		kalahaPlayer2.setPlayer(GameLogic.PLAYER2);
 		kalahaPlayer2.setIsKalaha(true);
 		kalahaPlayer2.setStones(0);
 	}
@@ -51,9 +50,10 @@ public class Board {
 		int halfPits = (this.pits.size() / 2);
 
 		// Player 1
-		this.pits.subList(0, halfPits).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(1));
+		this.pits.subList(0, halfPits).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(GameLogic.PLAYER1));
 		// Player 2
-		this.pits.subList(halfPits, this.pits.size()).stream().filter(p -> !p.isKalaha()).forEach(p -> p.setPlayer(2));
+		this.pits.subList(halfPits, this.pits.size()).stream().filter(p -> !p.isKalaha())
+				.forEach(p -> p.setPlayer(GameLogic.PLAYER2));
 	}
 
 	public void pourStones(int stones) {

@@ -31,41 +31,23 @@ public class GameController {
 		GameDto gameDto = null;
 		userDto.setId((long) 1);
 		try {
-			if (id != null) {
-				gameDto = this.gameService.loadGame(id);
-			} else {
+			if (id == null) {
 				gameDto = this.gameService.newGame(userDto);
+				return ResponseEntity.ok(gameDto);
 			}
-
-			if (gameDto.getId() == null) {
+			gameDto = this.gameService.loadGame(id);
+			if (gameDto == null) {
 				return ResponseEntity.notFound().build();
 			}
-
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
 			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(400).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(500).build();
 		}
 	}
-
-//	@GetMapping("/{id}")
-//	public ResponseEntity<GameDto> loadGame(@PathVariable Long id) {
-//		try {
-//			GameDto gameDto = this.gameService.loadGame(id);
-//			return ResponseEntity.ok(gameDto);
-////			return ResponseEntity.notFound().build();
-//		} catch (GameException e) {
-//			e.printStackTrace();
-//			// Implement
-//			return null;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
 
 	@PostMapping
 	@Transactional
@@ -73,11 +55,16 @@ public class GameController {
 		try {
 			MoveDto moveDto = moveForm.convertMoveFormToDto(moveForm);
 			GameDto gameDto = this.gameService.makeMove(moveDto);
+			if (gameDto == null) {
+				return ResponseEntity.notFound().build();
+			}
 			return ResponseEntity.ok(gameDto);
-//			return ResponseEntity.notFound().build();
+		} catch (GameException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(400).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(500).build();
 		}
 	}
 
