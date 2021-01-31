@@ -1,4 +1,4 @@
-package nl.guilhermesilveira.kalaha.validation;
+package nl.guilhermesilveira.kalaha.config.validation;
 
 public class FormErrorDto {
 

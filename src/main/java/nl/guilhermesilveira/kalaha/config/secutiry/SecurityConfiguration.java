@@ -1,4 +1,4 @@
-//package nl.guilhermesilveira.kalaha.config.secutiry;
+//package nl.guilhermesilveira.kalaha.kalaha.config.secutiry;
 //
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.http.HttpMethod;

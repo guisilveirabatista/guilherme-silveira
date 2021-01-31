@@ -1,6 +1,9 @@
 package nl.guilhermesilveira.kalaha.game;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -44,7 +47,7 @@ public class GameLogic implements IGameLogic {
 		game.setPlayer1Points(0);
 		game.setPlayer2Points(0);
 		game.setCreated(new Date());
-		game.setLastSelectedPit(null);
+		game.setCurrentPit(null);
 		game.setBoardSize(BOARD_SIZE);
 		game.setIntialStones(INITIAL_STONES);
 		game.setPitsState(this.board.getPits());
@@ -54,11 +57,16 @@ public class GameLogic implements IGameLogic {
 	}
 
 	public Game loadGame(Game game) {
+		// Implement additional logic if necessary
 		return game;
 	}
 
 	@Override
 	public Game makeMove(Game game, Move move) throws GameException {
+
+		// Validates if game and move are set up correctly in order to process the game
+		// logic
+		validateGameAndMoveSetup(game, move);
 
 		// Load game from passed game state
 		this.board = Board.loadBoard(game.getPitsState());
@@ -69,16 +77,23 @@ public class GameLogic implements IGameLogic {
 		this.turnNumber = game.getTurnNumber();
 		this.gameStatus = game.getGameStatus();
 
-//		if (isGameOver()) {
-//			throw new GameException("Game Over!");
-//		}
-
 		// Validates if turn is valid for the player
 		isLegalMove(game);
 
 		sowStones();
 
+<<<<<<< Updated upstream
 		updatePlayersScore();
+=======
+		changeGameTurn();
+		
+		updatePlayersPoints();
+		
+		if (isGameOver()) {
+			endGame();
+			this.gameStatus = getGameEndResult();
+		}		
+>>>>>>> Stashed changes
 
 		changeGameTurn();
 
@@ -87,19 +102,28 @@ public class GameLogic implements IGameLogic {
 		return game;
 	}
 
-	private Game updateGame(Game game) {
+	private void validateGameAndMoveSetup(Game game, Move move) throws GameException {
 
-		game.setTurnNumber(this.turnNumber);
+		// Validates Game and Move
+		if (game == null || move == null) {
+			throw new GameException("Game error! Game not found or move not created!");
+		}
+		// Validates Pit List
+		if (game.getPitsState() == null || game.getPitsState().size() < BOARD_SIZE) {
+			throw new GameException("Pit state invalid!");
+		}
 
-		game.setPitsState(this.board.getPits());
+		// Validate Turn
+		List<String> listEnumGameStatus = Stream.of(GameStatus.values()).map(GameStatus::name)
+				.collect(Collectors.toList());
+		if (game.getGameStatus() == null || !listEnumGameStatus.contains(game.getGameStatus().toString())) {
+			throw new GameException("Turn info invalid!");
+		}
 
-		game.setGameStatus(this.gameStatus);
-
-		game.setPlayer1Points(this.player1Points);
-
-		game.setPlayer2Points(this.player2Points);
-
-		return game;
+		// Validates Selected Pit
+		if (move.getSelectedPit() == null || move.getSelectedPit() > game.getPitsState().size()) {
+			throw new GameException("Pit invalid!");
+		}
 	}
 
 	private void isLegalMove(Game game) throws GameException {
@@ -157,10 +181,13 @@ public class GameLogic implements IGameLogic {
 		// Grab all stones from opposite pit if opposite pit is opponents pit and it's
 		// not empty
 		Pit oppositePit = this.board.getOppositePit(this.currentPit);
+<<<<<<< Updated upstream
 		if (oppositePit.countStones() == 0) {
 			return;
 		}
 		stolenStones += this.currentPit.grabAllStones();
+=======
+>>>>>>> Stashed changes
 		stolenStones += oppositePit.grabAllStones();
 
 		// Sow all the stones stolen in the current player's Kalaha
@@ -168,33 +195,39 @@ public class GameLogic implements IGameLogic {
 		currentPlayersKalaha.add(stolenStones);
 	}
 
+<<<<<<< Updated upstream
 	private void updatePlayersScore() {
 		this.player1Points = this.board.getPlayerKalaha(1).countStones();
 		this.player2Points = this.board.getPlayerKalaha(2).countStones();
 	}
 
+=======
+>>>>>>> Stashed changes
 	private void changeGameTurn() {
 		if (!checkIsLastPitIsPlayerSKalaha()) {
 			this.gameStatus = getNextPlayer(this.currentPlayer);
 		}
-		if (isGameOver()) {
-			endGame();
-			this.gameStatus = getGameEndResult();
-		}
 		this.turnNumber++;
 	}
 
-	private GameStatus getNextPlayer(int player) {
-		return getStatusNextPlayer(player);
+	private void updatePlayersPoints() {
+		this.player1Points = this.board.getPlayerKalaha(GameLogic.PLAYER1).countStones();
+		this.player2Points = this.board.getPlayerKalaha(GameLogic.PLAYER2).countStones();
 	}
 
-	private GameStatus getGameEndResult() {
-		if (this.player1Points > this.player2Points)
-			return GameStatus.Player1Wins;
-		if (this.player1Points < this.player2Points)
-			return GameStatus.Player2Wins;
-		else
-			return GameStatus.Draw;
+	private Game updateGame(Game game) {
+
+		game.setTurnNumber(this.turnNumber);
+
+		game.setPitsState(this.board.getPits());
+
+		game.setGameStatus(this.gameStatus);
+
+		game.setPlayer1Points(this.player1Points);
+
+		game.setPlayer2Points(this.player2Points);
+
+		return game;
 	}
 
 	private boolean checkIsLastPitIsPlayerSKalaha() {
@@ -207,7 +240,7 @@ public class GameLogic implements IGameLogic {
 			return true;
 		}
 		if (isImpossibleToWin()) {
-			return true;
+//			return true;
 		}
 		if (isOnePlayerFieldsEmpty()) {
 			return true;
@@ -250,15 +283,26 @@ public class GameLogic implements IGameLogic {
 
 	public void endGame() {
 		int stonesOnFieldP1 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1)
-				.mapToInt(Pit::getStones).sum();
+				.mapToInt(Pit::grabAllStones).sum();
 		int stonesOnFieldP2 = this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2)
-				.mapToInt(Pit::getStones).sum();
+				.mapToInt(Pit::grabAllStones).sum();
 
 		this.board.getPlayerKalaha(PLAYER1).add(stonesOnFieldP1);
 		this.board.getPlayerKalaha(PLAYER2).add(stonesOnFieldP2);
+		updatePlayersPoints();
+	}
 
-		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER1).forEach(Pit::empty);
-		this.board.getPits().stream().filter((p) -> !p.isKalaha() && p.getPlayer() == PLAYER2).forEach(Pit::empty);
+	private GameStatus getNextPlayer(int player) {
+		return getStatusNextPlayer(player);
+	}
+
+	private GameStatus getGameEndResult() {
+		if (this.player1Points > this.player2Points)
+			return GameStatus.Player1Wins;
+		if (this.player1Points < this.player2Points)
+			return GameStatus.Player2Wins;
+		else
+			return GameStatus.Draw;
 	}
 
 	private int getPlayerFromStatus(GameStatus gameStatus) {

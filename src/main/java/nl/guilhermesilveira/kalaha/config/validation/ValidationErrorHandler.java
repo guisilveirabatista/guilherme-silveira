@@ -1,4 +1,4 @@
-package nl.guilhermesilveira.kalaha.validation;
+package nl.guilhermesilveira.kalaha.config.validation;
 
 import java.util.ArrayList;
 import java.util.List;

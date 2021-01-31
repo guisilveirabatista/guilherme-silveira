@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Game {
@@ -21,6 +23,12 @@ public class Game {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(nullable = false)
 	private Long id;
+
+	@Column
+	private Integer boardSize;
+
+	@Column
+	private Integer intialStones;
 
 	@OneToOne
 	@JoinColumn
@@ -36,22 +44,16 @@ public class Game {
 	private Integer player2Points;
 
 	@Column
-	private String lastSelectedPit;
+	private String currentPit;
 
 	@Column
 	private Integer turnNumber;
 
-	@Column
-	private Integer boardSize;
-
-	@Column
-	private Integer intialStones;
-
-//	@Lob
 	@ElementCollection
 	private List<Pit> pitsState;
 
 	@Column
+	@Temporal(TemporalType.DATE)
 	private Date created;
 
 	public Long getId() {
@@ -60,6 +62,22 @@ public class Game {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Integer getBoardSize() {
+		return boardSize;
+	}
+
+	public void setBoardSize(Integer boardSize) {
+		this.boardSize = boardSize;
+	}
+
+	public Integer getIntialStones() {
+		return intialStones;
+	}
+
+	public void setIntialStones(Integer intialStones) {
+		this.intialStones = intialStones;
 	}
 
 	public User getUser() {
@@ -94,12 +112,12 @@ public class Game {
 		this.player2Points = player2Points;
 	}
 
-	public String getLastSelectedPit() {
-		return lastSelectedPit;
+	public String getCurrentPit() {
+		return currentPit;
 	}
 
-	public void setLastSelectedPit(String lastSelectedPit) {
-		this.lastSelectedPit = lastSelectedPit;
+	public void setCurrentPit(String currentPit) {
+		this.currentPit = currentPit;
 	}
 
 	public Integer getTurnNumber() {
@@ -108,22 +126,6 @@ public class Game {
 
 	public void setTurnNumber(Integer turnNumber) {
 		this.turnNumber = turnNumber;
-	}
-
-	public Integer getBoardSize() {
-		return boardSize;
-	}
-
-	public void setBoardSize(Integer boardSize) {
-		this.boardSize = boardSize;
-	}
-
-	public Integer getIntialStones() {
-		return intialStones;
-	}
-
-	public void setIntialStones(Integer intialStones) {
-		this.intialStones = intialStones;
 	}
 
 	public List<Pit> getPitsState() {

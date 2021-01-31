@@ -1,3 +1,4 @@
+var kalahaSound = new Audio("sounds/kalaha.ogg");
 const allPits = document.querySelectorAll('.pit');
 var gameState;
 
@@ -7,6 +8,7 @@ var pitsData;
 var player1Points;
 var player2Points;
 var turnNumber;
+var kalahaChanged;
 
 move = {
 	gameId: 0,
@@ -18,26 +20,19 @@ let loadGameId = getQuerystring("id");
 if (loadGameId) {
 	loadGame(loadGameId).then(response => {
 		// $window.sessionStorage.accessToken = response.body.access_token;
-		// console.log(response);
 		gameState = JSON.parse(response);
-		// console.log(gameState);
-
 		loadGameVariables(gameState);
 	});
 } else {
 	newGame().then(response => {
 		// $window.sessionStorage.accessToken = response.body.access_token;
-		// console.log(response);
 		gameState = JSON.parse(response);
-		// console.log(gameState);
-
 		loadGameVariables(gameState);
 	});
 }
 
 
 function loadGameVariables(gameState) {
-	//TODO RENAME ID TO GAMEID ON THE BACKEND
 	gameId = gameState.id;
 	gameStatus = gameState.gameStatus;
 	pitsData = gameState.pitsState;
@@ -52,7 +47,6 @@ function loadGameVariables(gameState) {
 	});
 
 	pitsData.forEach((pitData, index) => {
-		// pits[index].innerHTML = `<span class="stones">${pitData.stones}</span>`;
 		pits[index].innerHTML = pitData.stones;
 	})
 
@@ -114,14 +108,16 @@ function enablePits(gameState) {
 }
 
 allPits.forEach(pit => {
+	pit.addEventListener("click", function (e) {
 
-	pit.addEventListener("click", function(e) {
+		let kalahaP1ValueBefore = document.querySelector(".kalaha-p1").innerText;
+		let kalahaP2ValueBefore = document.querySelector(".kalaha-p2").innerText;
 
 		if (!this.classList.contains("pit-enabled")) {
 			return;
 		}
-		
-		if(parseInt(this.innerText) <= 0){
+
+		if (parseInt(this.innerText) <= 0) {
 			alert('Select a pit with stones!');
 		}
 
@@ -134,14 +130,19 @@ allPits.forEach(pit => {
 		makeMove(token, move.gameId, move.selectedPit).then(response => {
 			gameState = JSON.parse(response);
 			updateGame(gameState);
+			let kalahaP1ValueAfter = document.querySelector(".kalaha-p1").innerText;
+			let kalahaP2ValueAfter = document.querySelector(".kalaha-p2").innerText;
+			if (kalahaP1ValueBefore != kalahaP1ValueAfter ||
+				kalahaP2ValueBefore != kalahaP2ValueAfter) {
+				playKalahaStoneSound();
+			}
 		});
-
-		// makeMove(token, move.gameId, move.selectedPit).then(response => {
-		//     gameState = JSON.parse(response);
-		//     updateGame(gameState);
-		// });
 	});
 });
+
+function playKalahaStoneSound() {
+	kalahaSound.play();
+}
 
 function getQuerystring(key) {
 	var query = window.location.search.substring(1);
@@ -153,24 +154,3 @@ function getQuerystring(key) {
 		}
 	}
 }
-
-
-//TODO AJUSTAR BIND THIS
-
-// move = (e) => {
-//     let index = this.getAttribute("data-index");
-//     let stones = this.innerHTML;
-//     console.log("index: " + index);
-//     console.log("stones: " + stones);
-
-//     token = null;
-//     move.selectedPit = index;
-//     move.gameId = gameId;
-
-//     makeMove(token, move.gameId, move.selectedPit)
-// }
-
-// pitsEnabled.forEach(pitEnabled => {
-//     pitEnabled.addEventListener("click", move.bind(this));
-// });
-
