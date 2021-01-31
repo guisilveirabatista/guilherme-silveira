@@ -35,7 +35,7 @@ public class GameFactory {
 		game.setPlayer1Points(0);
 		game.setPlayer2Points(0);
 		game.setCurrentPit("");
-		game.setPitsState(board.getPits());
+		game.setPits(board.getPits());
 		game.setGameStatus(gameStatus);
 		game.setTurnNumber(0);
 		game.setBoardSize(14);

@@ -35,7 +35,7 @@ if (loadGameId) {
 function loadGameVariables(gameState) {
 	gameId = gameState.id;
 	gameStatus = gameState.gameStatus;
-	pitsData = gameState.pitsState;
+	pitsData = gameState.pits;
 	player1Points = gameState.player1Points;
 	player2Points = gameState.player2Points;
 	turnNumber = gameState.turnNumber;

@@ -50,7 +50,7 @@ public class Game {
 	private Integer turnNumber;
 
 	@ElementCollection
-	private List<Pit> pitsState;
+	private List<Pit> pits;
 
 	@Column
 	@Temporal(TemporalType.DATE)
@@ -128,12 +128,12 @@ public class Game {
 		this.turnNumber = turnNumber;
 	}
 
-	public List<Pit> getPitsState() {
-		return pitsState;
+	public List<Pit> getPits() {
+		return pits;
 	}
 
-	public void setPitsState(List<Pit> pitsState) {
-		this.pitsState = pitsState;
+	public void setPits(List<Pit> pits) {
+		this.pits = pits;
 	}
 
 	public Date getCreated() {

@@ -7,14 +7,11 @@ import org.springframework.stereotype.Service;
 
 import nl.guilhermesilveira.kalaha.dto.GameDto;
 import nl.guilhermesilveira.kalaha.dto.MoveDto;
-import nl.guilhermesilveira.kalaha.dto.UserDto;
 import nl.guilhermesilveira.kalaha.exception.GameException;
 import nl.guilhermesilveira.kalaha.game.IGameLogic;
 import nl.guilhermesilveira.kalaha.model.Game;
 import nl.guilhermesilveira.kalaha.model.Move;
-import nl.guilhermesilveira.kalaha.model.User;
 import nl.guilhermesilveira.kalaha.repository.GameRepository;
-import nl.guilhermesilveira.kalaha.repository.UserRepository;
 
 @Service
 public class GameService {
@@ -23,21 +20,11 @@ public class GameService {
 	private GameRepository gameRepository;
 
 	@Autowired
-	private UserRepository userRepository;
-
-	@Autowired
 	private IGameLogic gameLogic;
 
-	public GameDto newGame(UserDto userDto) throws GameException {
-		User user = null;
-		Optional<User> userOpt = this.userRepository.findById(userDto.getId());
-		if (userOpt.isPresent()) {
-			user = userOpt.get();
-		}
+	public GameDto newGame() throws GameException {
 
 		Game game = this.gameLogic.newGame();
-
-		game.setUser(user);
 
 		this.gameRepository.save(game);
 
