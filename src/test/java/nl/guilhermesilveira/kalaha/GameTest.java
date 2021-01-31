@@ -32,7 +32,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		int[] mockPitsExpectedResult = { 0, 7, 7, 7, 7, 7, 1, 6, 6, 6, 6, 6, 6, 0 };
 
@@ -55,7 +55,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		int[] mockPitsExpectedResult = { 2, 7, 3, 0, 8, 4, 22, 4, 0, 2, 4, 7, 2, 7 };
 
@@ -78,7 +78,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		assertEquals(7, pits.get(6).countStones());
 
@@ -96,7 +96,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		assertEquals(1, pits.get(6).countStones());
 	}
@@ -128,7 +128,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		// Check Kalaha 1
 		assertEquals(21, pits.get(6).countStones());
@@ -149,7 +149,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		// Check Kalaha 1
 		assertEquals(11, pits.get(6).countStones());
@@ -218,7 +218,7 @@ public class GameTest {
 
 		Game retorno = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = retorno.getPitsState();
+		List<Pit> pits = retorno.getPits();
 
 		// Check Kalaha 1
 		assertEquals(12, pits.get(6).countStones());
@@ -238,7 +238,7 @@ public class GameTest {
 
 		game = gameLogic.makeMove(game, move);
 
-		List<Pit> pits = game.getPitsState();
+		List<Pit> pits = game.getPits();
 
 		int[] mockPitsExpectedResult = { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 36 };
 
@@ -265,19 +265,19 @@ public class GameTest {
 		});
 
 		Game game2 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
-		game2.setPitsState(null);
+		game2.setPits(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game2, move);
 		});
 
 		Game game3 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
-		game3.setPitsState(new ArrayList<Pit>());
+		game3.setPits(new ArrayList<Pit>());
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game3, move);
 		});
 
 		Game game4 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
-		game4.getPitsState().remove(13);
+		game4.getPits().remove(13);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game4, move);
 		});

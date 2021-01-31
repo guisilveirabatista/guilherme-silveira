@@ -18,19 +18,15 @@ public class GameDto {
 
 	private int turnNumber;
 
-//	private String pitsState;
-
-	private List<PitDto> pitsState;
+	private List<PitDto> pits;
 
 	public GameDto(Game game) {
 		this.id = game.getId();
-		this.userId = game.getUser().getId();
 		this.player1Points = game.getPlayer1Points();
 		this.player2Points = game.getPlayer2Points();
 		this.gameStatus = game.getGameStatus().toString();
 		this.turnNumber = game.getTurnNumber();
-		this.pitsState = PitDto.convertPitListToDto(game.getPitsState());
-//		this.pitsState = game.getPitsState().toString();
+		this.pits = PitDto.convertPitListToDto(game.getPits());
 	}
 
 	public Long getId() {
@@ -81,20 +77,12 @@ public class GameDto {
 		this.turnNumber = turnNumber;
 	}
 
-	public List<PitDto> getPitsState() {
-		return pitsState;
+	public List<PitDto> getPits() {
+		return pits;
 	}
 
-	public void setPitsState(List<PitDto> pitsState) {
-		this.pitsState = pitsState;
+	public void setPits(List<PitDto> pits) {
+		this.pits = pits;
 	}
-
-//	public String getPitsState() {
-//		return pitsState;
-//	}
-//
-//	public void setPitsState(String pitsState) {
-//		this.pitsState = pitsState;
-//	}
 
 }

@@ -42,7 +42,7 @@ public class GameLogic implements IGameLogic {
 		game.setCurrentPit(null);
 		game.setBoardSize(BOARD_SIZE);
 		game.setIntialStones(INITIAL_STONES);
-		game.setPitsState(this.board.getPits());
+		game.setPits(this.board.getPits());
 		game.setGameStatus(GameStatus.Player1Turn);
 
 		return game;
@@ -61,7 +61,7 @@ public class GameLogic implements IGameLogic {
 		validateGameAndMoveSetup(game, move);
 
 		// Load game from passed game state
-		this.board = Board.loadBoard(game.getPitsState());
+		this.board = Board.loadBoard(game.getPits());
 		this.currentPit = this.board.getPits().get(move.getSelectedPit());
 		this.currentPlayer = getPlayerFromStatus(game.getGameStatus());
 		this.player1Points = game.getPlayer1Points();
@@ -97,7 +97,7 @@ public class GameLogic implements IGameLogic {
 			throw new GameException("Game error! Game not found or move not created!");
 		}
 		// Validates Pit List
-		if (game.getPitsState() == null || game.getPitsState().size() < BOARD_SIZE) {
+		if (game.getPits() == null || game.getPits().size() < BOARD_SIZE) {
 			throw new GameException("Pit state invalid!");
 		}
 
@@ -109,7 +109,7 @@ public class GameLogic implements IGameLogic {
 		}
 
 		// Validates Selected Pit
-		if (move.getSelectedPit() == null || move.getSelectedPit() > game.getPitsState().size()) {
+		if (move.getSelectedPit() == null || move.getSelectedPit() > game.getPits().size()) {
 			throw new GameException("Pit invalid!");
 		}
 	}
@@ -193,7 +193,7 @@ public class GameLogic implements IGameLogic {
 
 		game.setTurnNumber(this.turnNumber);
 
-		game.setPitsState(this.board.getPits());
+		game.setPits(this.board.getPits());
 
 		game.setGameStatus(this.gameStatus);
 

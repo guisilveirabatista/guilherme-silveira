@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import nl.guilhermesilveira.kalaha.dto.GameDto;
 import nl.guilhermesilveira.kalaha.dto.MoveDto;
-import nl.guilhermesilveira.kalaha.dto.UserDto;
 import nl.guilhermesilveira.kalaha.exception.GameException;
 import nl.guilhermesilveira.kalaha.form.MoveForm;
 import nl.guilhermesilveira.kalaha.service.GameService;
@@ -26,46 +25,26 @@ public class GameController {
 	private GameService gameService;
 
 	@GetMapping
-	public ResponseEntity<GameDto> newGame(Long id) {
-		UserDto userDto = new UserDto();
+	public ResponseEntity<GameDto> getGame(Long id) {
 		GameDto gameDto = null;
-		userDto.setId((long) 1);
 		try {
 			if (id != null) {
 				gameDto = this.gameService.loadGame(id);
 			} else {
-				gameDto = this.gameService.newGame(userDto);
+				gameDto = this.gameService.newGame();
 			}
-
-			if (gameDto.getId() == null) {
+			if (gameDto == null) {
 				return ResponseEntity.notFound().build();
 			}
-
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.status(400).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(500).build();
 		}
 	}
-
-//	@GetMapping("/{id}")
-//	public ResponseEntity<GameDto> loadGame(@PathVariable Long id) {
-//		try {
-//			GameDto gameDto = this.gameService.loadGame(id);
-//			return ResponseEntity.ok(gameDto);
-////			return ResponseEntity.notFound().build();
-//		} catch (GameException e) {
-//			e.printStackTrace();
-//			// Implement
-//			return null;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
 
 	@PostMapping
 	@Transactional
@@ -79,7 +58,7 @@ public class GameController {
 			return ResponseEntity.status(400).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(500).build();
 		}
 	}
 
