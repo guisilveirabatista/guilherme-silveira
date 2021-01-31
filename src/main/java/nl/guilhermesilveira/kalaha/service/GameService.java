@@ -29,7 +29,6 @@ public class GameService {
 	private IGameLogic gameLogic;
 
 	public GameDto newGame(UserDto userDto) throws GameException {
-
 		User user = null;
 		Optional<User> userOpt = this.userRepository.findById(userDto.getId());
 		if (userOpt.isPresent()) {
@@ -39,7 +38,7 @@ public class GameService {
 		Game game = this.gameLogic.newGame();
 
 		game.setUser(user);
-		
+
 		this.gameRepository.save(game);
 
 		return new GameDto(game);
@@ -58,9 +57,7 @@ public class GameService {
 	}
 
 	public GameDto makeMove(MoveDto moveDto) throws GameException {
-
 		Move move = moveDto.convertToMove();
-
 		Optional<Game> optional = this.gameRepository.findById(move.getGameId());
 		if (optional.isPresent()) {
 			Game game = optional.get();

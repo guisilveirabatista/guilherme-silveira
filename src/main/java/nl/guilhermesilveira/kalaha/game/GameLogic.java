@@ -10,14 +10,6 @@ import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Move;
 import nl.guilhermesilveira.kalaha.model.Pit;
 
-//TODO IMPLEMENT EXCEPTIONS
-
-//TODO IMPLEMENT TESTS
-
-//TODO IMPROVE CONSTRUCTORS OF CLASSES
-
-//TODO IMPLEMENT LOG
-
 @Component
 public class GameLogic implements IGameLogic {
 
@@ -78,9 +70,9 @@ public class GameLogic implements IGameLogic {
 
 		sowStones();
 
-		updatePlayersScore();
-
 		changeGameTurn();
+
+		updatePlayersScore();
 
 		game = updateGame(game);
 
@@ -153,6 +145,7 @@ public class GameLogic implements IGameLogic {
 		int stolenStones = 0;
 
 		// Grab all stones from current pit
+		stolenStones += this.currentPit.grabAllStones();
 
 		// Grab all stones from opposite pit if opposite pit is opponents pit and it's
 		// not empty
@@ -160,7 +153,6 @@ public class GameLogic implements IGameLogic {
 		if (oppositePit.countStones() == 0) {
 			return;
 		}
-		stolenStones += this.currentPit.grabAllStones();
 		stolenStones += oppositePit.grabAllStones();
 
 		// Sow all the stones stolen in the current player's Kalaha
@@ -169,8 +161,8 @@ public class GameLogic implements IGameLogic {
 	}
 
 	private void updatePlayersScore() {
-		this.player1Points = this.board.getPlayerKalaha(1).countStones();
-		this.player2Points = this.board.getPlayerKalaha(2).countStones();
+		this.player1Points = this.board.getPlayerKalaha(GameLogic.PLAYER1).countStones();
+		this.player2Points = this.board.getPlayerKalaha(GameLogic.PLAYER2).countStones();
 	}
 
 	private void changeGameTurn() {
@@ -262,11 +254,11 @@ public class GameLogic implements IGameLogic {
 	}
 
 	private int getPlayerFromStatus(GameStatus gameStatus) {
-		return gameStatus == GameStatus.Player1Turn ? 1 : 2;
+		return gameStatus == GameStatus.Player1Turn ? GameLogic.PLAYER1 : GameLogic.PLAYER2;
 	}
 
 	private GameStatus getStatusNextPlayer(int player) {
-		return player == 1 ? GameStatus.Player2Turn : GameStatus.Player1Turn;
+		return player == GameLogic.PLAYER1 ? GameStatus.Player2Turn : GameStatus.Player1Turn;
 	}
 
 }
