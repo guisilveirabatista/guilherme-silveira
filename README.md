@@ -64,16 +64,6 @@ This project follows the MVC and Rest architectures. The structure is organised 
 This project uses JUnit to test the back-end logic, following the Test Driven Development Principles.  
 You can find the testing classes in the folder `root/src/test/java/nl/guilhermesilveira/kalaha`
 
-## Architecture
-
-* The `config` package contains the HTTP Security configuration.
-* The `controller` package contains classes that handle HTTP requests.
-* The `model` package contains the entity classes.
-* The `form` and `dto` packages contain the classes used to map request parameters.
-* The `repository` package contains the repository interfaces that provide CRUD functionality to the entity classes.
-* The `security` package contains the classes responsible for user authentication.
-* The `service` package identifies the application layer that encapsulates the business logic, controls transactions, etc.
-
 ## Contact
 
 Guilherme Silveira - guisilveirabatista@gmail.com
