@@ -74,7 +74,7 @@ public class GameLogic implements IGameLogic {
 
 		sowStones();
 
-        updatePlayersScore();
+        updatePlayersPoints();
         
 		changeGameTurn();
 		
