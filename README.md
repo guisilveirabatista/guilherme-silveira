@@ -59,12 +59,10 @@ This project follows the MVC and Rest architectures. The structure is organised 
 * The `form` and `dto` packages contain the classes used to map request parameters.
 * The `validation` packages contain the classes used to validate the information received from the view.
 
-## Tests
+## Tests  
 
 This project uses JUnit to test the back-end logic, following the Test Driven Development Principles.  
 You can find the testing classes in the folder `root/src/test/java/nl/guilhermesilveira/kalaha`
-=======
-4. CLick on `New Game`
 
 ## Architecture
 
