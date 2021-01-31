@@ -249,7 +249,7 @@ public class GameTest {
 		assertEquals(GameStatus.Player2Wins, game.getGameStatus());
 
 	}
-	
+
 	@Test
 	void testValidNewGame() {
 		Move move = new Move();
@@ -257,43 +257,43 @@ public class GameTest {
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(null, move);
 		});
-		
+
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 		Game game1 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game1, null);
 		});
-		
+
 		Game game2 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		game2.setPitsState(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game2, move);
 		});
-		
+
 		Game game3 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		game3.setPitsState(new ArrayList<Pit>());
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game3, move);
 		});
-		
+
 		Game game4 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		game4.getPitsState().remove(13);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game4, move);
 		});
-		
+
 		Game game5 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		game5.setGameStatus(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game5, move);
 		});
-		
+
 		Game game6 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		move.setSelectedPit(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game6, move);
 		});
-		
+
 		Game game7 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
 		move.setSelectedPit(100);
 		Assertions.assertThrows(GameException.class, () -> {
