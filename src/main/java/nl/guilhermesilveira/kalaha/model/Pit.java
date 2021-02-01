@@ -1,13 +1,20 @@
 package nl.guilhermesilveira.kalaha.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Embeddable
 public class Pit {
 
+	@Column(nullable = true)
 	private int stones;
+	@Column(nullable = true)
 	private boolean isKalaha;
-	private int player;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = true)
+	private Player player;
 
 	public Pit() {
 
@@ -17,7 +24,7 @@ public class Pit {
 		this.stones = stones;
 	}
 
-	public Pit(int stones, boolean isKalaha, int player) {
+	public Pit(int stones, boolean isKalaha, Player player) {
 		this.stones = stones;
 		this.isKalaha = isKalaha;
 		this.player = player;
@@ -39,11 +46,11 @@ public class Pit {
 		this.isKalaha = isKalaha;
 	}
 
-	public int getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(int player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 
@@ -70,15 +77,15 @@ public class Pit {
 		return "{'stones': " + this.stones + ",'isKalaha': " + this.isKalaha + ",'player': " + this.player + "}";
 	}
 
-	public boolean isPlayersKalaha(int currentPlayer) {
+	public boolean isPlayersKalaha(Player currentPlayer) {
 		return this.isKalaha && this.player == currentPlayer ? true : false;
 	}
 
-	public boolean isOpponentsKalaha(int currentPlayer) {
+	public boolean isOpponentsKalaha(Player currentPlayer) {
 		return this.isKalaha && this.player != currentPlayer ? true : false;
 	}
 
-	public boolean isOpponentsPit(int currentPlayer) {
+	public boolean isOpponentsPit(Player currentPlayer) {
 		return this.player != currentPlayer ? true : false;
 	}
 

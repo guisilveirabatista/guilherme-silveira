@@ -5,7 +5,6 @@ import nl.guilhermesilveira.kalaha.model.Move;
 public class MoveDto {
 
 	private Long gameId;
-	private Long userId;
 	private Integer selectedPit;
 
 	public Long getGameId() {
@@ -14,14 +13,6 @@ public class MoveDto {
 
 	public void setGameId(Long gameId) {
 		this.gameId = gameId;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public int getSelectedPit() {
