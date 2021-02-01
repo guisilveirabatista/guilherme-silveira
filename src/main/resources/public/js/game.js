@@ -36,8 +36,8 @@ function loadGameVariables(gameState) {
 	gameId = gameState.id;
 	gameStatus = gameState.gameStatus;
 	pitsData = gameState.pits;
-	player1Points = gameState.player1Points;
-	player2Points = gameState.player2Points;
+	player1Points = gameState.playerLeftPoints;
+	player2Points = gameState.playerRightPoints;
 	turnNumber = gameState.turnNumber;
 
 	pits = Array.prototype.slice.call(allPits);
@@ -64,10 +64,10 @@ function loadGameVariables(gameState) {
 
 function getGameStatus() {
 	switch (gameStatus) {
-		case "Player1Turn": return "Player 1 Turn"; break;
-		case "Player2Turn": return "Player 2 Turn"; break;
-		case "Player1Wins": return "Game Over! Player 1 Wins!"; break;
-		case "Player2Wins": return "Game Over! Player 2 Wins!"; break;
+		case "PlayerLeftTurn": return "Player 1 Turn"; break;
+		case "PlayerRightTurn": return "Player 2 Turn"; break;
+		case "PlayerLeftWins": return "Game Over! Player 1 Wins!"; break;
+		case "PlayerRightWins": return "Game Over! Player 2 Wins!"; break;
 		case "Draw": return "Game Over! It's a Draw!"; break;
 	}
 }
@@ -90,11 +90,13 @@ function enablePits(gameState) {
 		p.classList.remove("pit-enabled");
 	});
 
-	if (gameState.gameStatus == "Player1Turn") {
+	console.log(gameState.gameStatus);
+
+	if (gameState.gameStatus == "PlayerLeftTurn") {
 		pitsEnabled = document.querySelectorAll(".pit-p1");
 		kalahaP1.classList.add("kalaha-enabled");
 	}
-	if (gameState.gameStatus == "Player2Turn") {
+	if (gameState.gameStatus == "PlayerRightTurn") {
 		pitsEnabled = document.querySelectorAll(".pit-p2");
 		kalahaP2.classList.add("kalaha-enabled");
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,16 +36,25 @@ public class Game {
 	private User user;
 
 	@Enumerated(EnumType.STRING)
+	private Player playerLeft;
+
+	@Enumerated(EnumType.STRING)
+	private Player playerRight;
+
+	@Enumerated(EnumType.STRING)
+	private Player currentPlayer;
+
+	@Enumerated(EnumType.STRING)
 	private GameStatus gameStatus;
 
 	@Column
-	private Integer player1Points;
+	private Integer playerLeftPoints;
 
 	@Column
-	private Integer player2Points;
+	private Integer playerRightPoints;
 
-	@Column
-	private String currentPit;
+	@Embedded
+	private Pit currentPit;
 
 	@Column
 	private Integer turnNumber;
@@ -88,6 +98,30 @@ public class Game {
 		this.user = user;
 	}
 
+	public Player getPlayerLeft() {
+		return playerLeft;
+	}
+
+	public void setPlayerLeft(Player playerLeft) {
+		this.playerLeft = playerLeft;
+	}
+
+	public Player getPlayerRight() {
+		return playerRight;
+	}
+
+	public void setPlayerRight(Player playerRight) {
+		this.playerRight = playerRight;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Player currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
 	public GameStatus getGameStatus() {
 		return gameStatus;
 	}
@@ -96,27 +130,27 @@ public class Game {
 		this.gameStatus = gameStatus;
 	}
 
-	public Integer getPlayer1Points() {
-		return player1Points;
+	public Integer getPlayerLeftPoints() {
+		return playerLeftPoints;
 	}
 
-	public void setPlayer1Points(Integer player1Points) {
-		this.player1Points = player1Points;
+	public void setPlayerLeftPoints(Integer playerLeftPoints) {
+		this.playerLeftPoints = playerLeftPoints;
 	}
 
-	public Integer getPlayer2Points() {
-		return player2Points;
+	public Integer getPlayerRightPoints() {
+		return playerRightPoints;
 	}
 
-	public void setPlayer2Points(Integer player2Points) {
-		this.player2Points = player2Points;
+	public void setPlayerRightPoints(Integer playerRightPoints) {
+		this.playerRightPoints = playerRightPoints;
 	}
 
-	public String getCurrentPit() {
+	public Pit getCurrentPit() {
 		return currentPit;
 	}
 
-	public void setCurrentPit(String currentPit) {
+	public void setCurrentPit(Pit currentPit) {
 		this.currentPit = currentPit;
 	}
 

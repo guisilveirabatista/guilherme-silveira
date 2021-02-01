@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.guilhermesilveira.kalaha.model.Pit;
+import nl.guilhermesilveira.kalaha.model.Player;
 
 public class PitDto {
 
 	private int stones;
 	private boolean isKalaha;
-	private int player;
+	private Player player;
 
 	public PitDto() {
 
@@ -37,11 +38,11 @@ public class PitDto {
 		this.isKalaha = isKalaha;
 	}
 
-	public int getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(int player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 

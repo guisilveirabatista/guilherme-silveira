@@ -8,76 +8,96 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import nl.guilhermesilveira.kalaha.exception.GameException;
-import nl.guilhermesilveira.kalaha.game.Board;
+import nl.guilhermesilveira.kalaha.game.BoardLogic;
+import nl.guilhermesilveira.kalaha.model.Game;
+import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Pit;
+import nl.guilhermesilveira.kalaha.model.Player;
 
 public class BoardTest {
 
 	@Test
 	void testBoardSetup() throws GameException {
 
-		Board board = new Board(14, 6);
-		
-		assertEquals(14, board.getPits().size());
-		
-		Pit kalaha1 = board.getPlayerKalaha(1);
-		
-		assertEquals(true, kalaha1.isKalaha());
-		assertEquals(1, kalaha1.getPlayer());
-		assertEquals(0, kalaha1.countStones());
-		
-		Pit kalaha2 = board.getPlayerKalaha(2);
-		
-		assertEquals(true, kalaha2.isKalaha());
-		assertEquals(2, kalaha2.getPlayer());
-		assertEquals(0, kalaha2.countStones());
-		
-		List<Pit> fieldP1 = board.getPits().stream().filter(p -> !p.isKalaha() && p.getPlayer() == 1).collect(Collectors.toList());		
-		fieldP1.forEach(p -> {
+		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
+
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
+		game.setPits(BoardLogic.prepareBoard(game));
+
+		assertEquals(14, game.getPits().size());
+
+		Pit kalahaPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits());
+
+		assertEquals(true, kalahaPlayerLeft.isKalaha());
+		assertEquals(Player.Player1, kalahaPlayerLeft.getPlayer());
+		assertEquals(0, kalahaPlayerLeft.countStones());
+
+		Pit kalahaPlayerRight = BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits());
+
+		assertEquals(true, kalahaPlayerRight.isKalaha());
+		assertEquals(Player.Player2, kalahaPlayerRight.getPlayer());
+		assertEquals(0, kalahaPlayerRight.countStones());
+
+		List<Pit> fieldPlayerLeft = game.getPits().stream()
+				.filter(p -> !p.isKalaha() && p.getPlayer() == game.getPlayerLeft()).collect(Collectors.toList());
+		fieldPlayerLeft.forEach(p -> {
 			assertEquals(6, p.countStones());
 		});
-		
-		List<Pit> fieldP2 = board.getPits().stream().filter(p -> !p.isKalaha() && p.getPlayer() == 2).collect(Collectors.toList());		
-		fieldP2.forEach(p -> {
+
+		List<Pit> fieldPlayerRight = game.getPits().stream()
+				.filter(p -> !p.isKalaha() && p.getPlayer() == game.getPlayerRight()).collect(Collectors.toList());
+		fieldPlayerRight.forEach(p -> {
 			assertEquals(6, p.countStones());
 		});
-		
+
 	}
-	
+
 	@Test
 	void testGetNextPit() throws GameException {
-		Board board = new Board(14, 6);
-		
-		Pit pit = board.getPits().get(0);
-		
-		Pit nextPit = board.getNextPit(pit);
-		
-		assertEquals(1, board.getPits().indexOf(nextPit));
+
+		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
+
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
+		game.setPits(BoardLogic.prepareBoard(game));
+
+		game.setCurrentPit(game.getPits().get(0));
+
+		Pit nextPit = BoardLogic.getNextPit(game.getCurrentPit(), game.getPits());
+
+		assertEquals(1, game.getPits().indexOf(nextPit));
 	}
-	
+
 	@Test
 	void testGetOppositePit() throws GameException {
-		Board board = new Board(14, 6);
-		
-		Pit pit = board.getPits().get(0);
-		
-		Pit oppositePit = board.getOppositePit(pit);
-		
-		assertEquals(12, board.getPits().indexOf(oppositePit));
+
+		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
+
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
+		game.setPits(BoardLogic.prepareBoard(game));
+
+		game.setCurrentPit(game.getPits().get(0));
+
+		Pit oppositePit = BoardLogic.getOppositePit(game.getCurrentPit(), game.getPits());
+
+		assertEquals(12, game.getPits().indexOf(oppositePit));
 	}
-	
+
 	@Test
 	void testGetPlayerKalaha() throws GameException {
-		Board board = new Board(14, 6);
-		
-		Pit kalahaP1 = board.getPlayerKalaha(1);
-		
-		assertEquals(true, kalahaP1.isKalaha());
-		assertEquals(1, kalahaP1.getPlayer());
-		
-		Pit kalahaP2 = board.getPlayerKalaha(2);
-		
-		assertEquals(true, kalahaP2.isKalaha());
-		assertEquals(2, kalahaP2.getPlayer());
+
+		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
+
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
+		game.setPits(BoardLogic.prepareBoard(game));
+
+		Pit kalahaPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits());
+
+		assertEquals(true, kalahaPlayerLeft.isKalaha());
+		assertEquals(Player.Player1.name(), kalahaPlayerLeft.getPlayer().name());
+
+		Pit kalahaPlayerRight = BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits());
+
+		assertEquals(true, kalahaPlayerRight.isKalaha());
+		assertEquals(Player.Player2.name(), kalahaPlayerRight.getPlayer().name());
 	}
 }

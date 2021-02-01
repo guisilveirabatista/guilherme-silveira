@@ -25,7 +25,7 @@ public class GameController {
 	private GameService gameService;
 
 	@GetMapping
-	public ResponseEntity<GameDto> getGame(Long id) {
+	public ResponseEntity<?> getGame(Long id) {
 		GameDto gameDto = null;
 		try {
 			if (id != null) {
@@ -39,7 +39,7 @@ public class GameController {
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
 			System.out.println(e.getMessage());
-			return ResponseEntity.status(400).build();
+			return ResponseEntity.status(400).body(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(500).build();
@@ -48,14 +48,14 @@ public class GameController {
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity<GameDto> makeMove(@RequestBody @Valid MoveForm moveForm) {
+	public ResponseEntity<?> makeMove(@RequestBody @Valid MoveForm moveForm) {
 		try {
 			MoveDto moveDto = moveForm.convertMoveFormToDto(moveForm);
 			GameDto gameDto = this.gameService.makeMove(moveDto);
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
 			System.out.println(e.getMessage());
-			return ResponseEntity.status(400).build();
+			return ResponseEntity.status(400).body(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(500).build();

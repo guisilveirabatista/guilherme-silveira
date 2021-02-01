@@ -10,9 +10,9 @@ public class GameDto {
 
 	private Long userId;
 
-	private Integer player1Points;
+	private Integer playerLeftPoints;
 
-	private Integer player2Points;
+	private Integer playerRightPoints;
 
 	private String gameStatus;
 
@@ -22,8 +22,8 @@ public class GameDto {
 
 	public GameDto(Game game) {
 		this.id = game.getId();
-		this.player1Points = game.getPlayer1Points();
-		this.player2Points = game.getPlayer2Points();
+		this.playerLeftPoints = game.getPlayerLeftPoints();
+		this.playerRightPoints = game.getPlayerRightPoints();
 		this.gameStatus = game.getGameStatus().toString();
 		this.turnNumber = game.getTurnNumber();
 		this.pits = PitDto.convertPitListToDto(game.getPits());
@@ -45,20 +45,20 @@ public class GameDto {
 		this.userId = userId;
 	}
 
-	public Integer getPlayer1Points() {
-		return player1Points;
+	public Integer getPlayerLeftPoints() {
+		return playerLeftPoints;
 	}
 
-	public void setPlayer1Points(Integer player1Points) {
-		this.player1Points = player1Points;
+	public void setPlayerLeftPoints(Integer playerLeftPoints) {
+		this.playerLeftPoints = playerLeftPoints;
 	}
 
-	public Integer getPlayer2Points() {
-		return player2Points;
+	public Integer getPlayerRightPoints() {
+		return playerRightPoints;
 	}
 
-	public void setPlayer2Points(Integer player2Points) {
-		this.player2Points = player2Points;
+	public void setPlayerRightPoints(Integer playerRightPoints) {
+		this.playerRightPoints = playerRightPoints;
 	}
 
 	public String getGameStatus() {

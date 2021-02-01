@@ -15,6 +15,7 @@ import nl.guilhermesilveira.kalaha.model.Game;
 import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Move;
 import nl.guilhermesilveira.kalaha.model.Pit;
+import nl.guilhermesilveira.kalaha.model.Player;
 
 public class GameTest {
 
@@ -25,7 +26,7 @@ public class GameTest {
 
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(0);
@@ -48,7 +49,8 @@ public class GameTest {
 		// Some random game scenario
 		int[] mockPits = { 1, 6, 2, 0, 8, 4, 22, 4, 8, 1, 3, 6, 1, 6 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player2Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerRightTurn);
+		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
 		move.setSelectedPit(8);
@@ -71,7 +73,8 @@ public class GameTest {
 		// Game scenario which passes by opponet's kalaha
 		int[] mockPits = { 1, 1, 1, 4, 1, 2, 7, 2, 3, 1, 16, 14, 2, 17 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player2Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerRightTurn);
+		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
 		move.setSelectedPit(10);
@@ -89,7 +92,7 @@ public class GameTest {
 		// Game scenario which passes by opponet's kalaha
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(0);
@@ -106,22 +109,22 @@ public class GameTest {
 		// Game scenario which passes by opponet's kalaha
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(2);
 
 		game = gameLogic.makeMove(game, move);
 
-		assertEquals(GameStatus.Player2Turn, game.getGameStatus());
+		assertEquals(GameStatus.PlayerRightTurn, game.getGameStatus());
 	}
 
 	@Test
-	void testP1StealStones() throws GameException {
+	void testPlayerLeftStealStones() throws GameException {
 
 		int[] mockPits = { 0, 0, 4, 0, 1, 0, 11, 9, 3, 4, 0, 0, 0, 32 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(4);
@@ -138,11 +141,12 @@ public class GameTest {
 	}
 
 	@Test
-	void testP2StealStones() throws GameException {
+	void testPlayerRightStealStones() throws GameException {
 
 		int[] mockPits = { 0, 8, 4, 0, 1, 0, 11, 9, 3, 4, 1, 0, 0, 20 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player2Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerRightTurn);
+		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
 		move.setSelectedPit(10);
@@ -159,11 +163,11 @@ public class GameTest {
 	}
 
 	@Test
-	void testP1Wins() throws GameException {
+	void testPlayerLeftWins() throws GameException {
 
 		int[] mockPits = { 0, 0, 0, 0, 0, 1, 36, 0, 0, 0, 0, 0, 0, 35 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(5);
@@ -171,15 +175,16 @@ public class GameTest {
 		game = gameLogic.makeMove(game, move);
 
 		// Check Kalaha 1
-		assertEquals(GameStatus.Player1Wins, game.getGameStatus());
+		assertEquals(GameStatus.PlayerLeftWins, game.getGameStatus());
 	}
 
 	@Test
-	void testP2Wins() throws GameException {
+	void testPlayerRightWins() throws GameException {
 
 		int[] mockPits = { 0, 0, 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 1, 36 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player2Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerRightTurn);
+		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
 		move.setSelectedPit(12);
@@ -187,7 +192,7 @@ public class GameTest {
 		game = gameLogic.makeMove(game, move);
 
 		// Check Kalaha 1
-		assertEquals(GameStatus.Player2Wins, game.getGameStatus());
+		assertEquals(GameStatus.PlayerRightWins, game.getGameStatus());
 	}
 
 	@Test
@@ -195,7 +200,8 @@ public class GameTest {
 
 		int[] mockPits = { 0, 0, 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 1, 35 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player2Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerRightTurn);
+		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
 		move.setSelectedPit(12);
@@ -211,7 +217,7 @@ public class GameTest {
 
 		int[] mockPits = { 0, 0, 0, 0, 0, 2, 11, 0, 3, 4, 0, 0, 0, 25 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(5);
@@ -231,7 +237,7 @@ public class GameTest {
 	void testEmptySideTriggersGameOver() throws GameException {
 		int[] mockPits = { 0, 0, 0, 0, 0, 1, 0, 6, 6, 6, 6, 6, 6, 0 };
 
-		Game game = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
 		move.setSelectedPit(5);
@@ -246,7 +252,7 @@ public class GameTest {
 			assertEquals(mockPitsExpectedResult[i], pits.get(i).countStones());
 		}
 
-		assertEquals(GameStatus.Player2Wins, game.getGameStatus());
+		assertEquals(GameStatus.PlayerRightWins, game.getGameStatus());
 
 	}
 
@@ -259,42 +265,42 @@ public class GameTest {
 		});
 
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
-		Game game1 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game1 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game1, null);
 		});
 
-		Game game2 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game2 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game2.setPits(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game2, move);
 		});
 
-		Game game3 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game3 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game3.setPits(new ArrayList<Pit>());
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game3, move);
 		});
 
-		Game game4 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game4 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game4.getPits().remove(13);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game4, move);
 		});
 
-		Game game5 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game5 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game5.setGameStatus(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game5, move);
 		});
 
-		Game game6 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game6 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		move.setSelectedPit(null);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game6, move);
 		});
 
-		Game game7 = GameFactory.createGame(mockPits, GameStatus.Player1Turn);
+		Game game7 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		move.setSelectedPit(100);
 		Assertions.assertThrows(GameException.class, () -> {
 			gameLogic.makeMove(game7, move);
