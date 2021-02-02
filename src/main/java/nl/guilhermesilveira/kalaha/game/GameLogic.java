@@ -15,14 +15,13 @@ import nl.guilhermesilveira.kalaha.model.Pit;
 import nl.guilhermesilveira.kalaha.model.Player;
 
 @Component
-public class GameLogic implements IGameLogic {
+public class GameLogic {
 
 	// These values could be dynamic in the future
 	public static final int BOARD_SIZE = 14;
 	public static final int INITIAL_STONES = 6;
 
-	@Override
-	public Game newGame() {
+	public static Game newGame() {
 
 		Game game = new Game();
 		game.setTurnNumber(1);
@@ -41,14 +40,12 @@ public class GameLogic implements IGameLogic {
 		return game;
 	}
 
-	@Override
-	public Game loadGame(Game game) {
+	public static Game loadGame(Game game) {
 		// Implement additional logic if necessary
 		return game;
 	}
 
-	@Override
-	public Game makeMove(Game game, Move move) throws GameException {
+	public static Game makeMove(Game game, Move move) throws GameException {
 
 		validateGameAndMoveSetup(game, move);
 
@@ -64,17 +61,16 @@ public class GameLogic implements IGameLogic {
 
 		if (isGameOver(game)) {
 			endGame(game);
-			setGameEndResult(game);
 		}
 
 		return game;
 	}
 
-	private void changeCurrentPit(Game game, Move move) {
+	private static void changeCurrentPit(Game game, Move move) {
 		game.setCurrentPit(game.getPits().get(move.getSelectedPit()));
 	}
 
-	private void validateGameAndMoveSetup(Game game, Move move) throws GameException {
+	private static void validateGameAndMoveSetup(Game game, Move move) throws GameException {
 
 		// Validates Game and Move
 		if (game == null || move == null) {
@@ -98,7 +94,7 @@ public class GameLogic implements IGameLogic {
 		}
 	}
 
-	private void isLegalMove(Game game, Move move) throws GameException {
+	private static void isLegalMove(Game game, Move move) throws GameException {
 
 		if (game.getCurrentPlayer() != Player.Player1 && game.getCurrentPlayer() != Player.Player2) {
 			throw new GameException("Player number invalid!");
@@ -113,7 +109,7 @@ public class GameLogic implements IGameLogic {
 		}
 	}
 
-	private void sowStones(Game game) {
+	private static void sowStones(Game game) {
 		int hand = game.getCurrentPit().grabAllStones();
 
 		while (hand > 0) {
@@ -133,7 +129,7 @@ public class GameLogic implements IGameLogic {
 		}
 	}
 
-	private boolean canStealStones(Game game) {
+	private static boolean canStealStones(Game game) {
 		if (game.getCurrentPit().countStones() > 1 || game.getCurrentPit().isKalaha()) {
 			return false;
 		}
@@ -144,7 +140,7 @@ public class GameLogic implements IGameLogic {
 		return true;
 	}
 
-	private void stealStones(Game game) {
+	private static void stealStones(Game game) {
 		int stolenStones = 0;
 
 		// Grab all stones from current pit
@@ -160,7 +156,7 @@ public class GameLogic implements IGameLogic {
 		currentPlayersKalaha.add(stolenStones);
 	}
 
-	private void changeGameTurn(Game game) {
+	private static void changeGameTurn(Game game) {
 		if (!checkIsLastPitIsPlayerSKalaha(game)) {
 			game.setGameStatus(getNextTurnGameStatus(game));
 			game.setCurrentPlayer(getTurnPlayer(game));
@@ -168,16 +164,16 @@ public class GameLogic implements IGameLogic {
 		game.setTurnNumber(game.getTurnNumber() + 1);
 	}
 
-	private void updatePlayersPoints(Game game) {
+	private static void updatePlayersPoints(Game game) {
 		game.setPlayerLeftPoints(BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).countStones());
 		game.setPlayerRightPoints(BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).countStones());
 	}
 
-	private boolean checkIsLastPitIsPlayerSKalaha(Game game) {
+	private static boolean checkIsLastPitIsPlayerSKalaha(Game game) {
 		return game.getCurrentPit().isPlayersKalaha(game.getCurrentPlayer());
 	}
 
-	private boolean isGameOver(Game game) {
+	private static boolean isGameOver(Game game) {
 		if (game.getGameStatus() == GameStatus.PlayerLeftWins || game.getGameStatus() == GameStatus.PlayerRightWins
 				|| game.getGameStatus() == GameStatus.Draw) {
 			return true;
@@ -185,7 +181,7 @@ public class GameLogic implements IGameLogic {
 
 		// Maybe turn this condition on if necessary
 		if (isImpossibleToWin(game)) {
-//			return true;
+			// return true;
 		}
 
 		if (isOnePlayerFieldsEmpty(game)) {
@@ -194,7 +190,7 @@ public class GameLogic implements IGameLogic {
 		return false;
 	}
 
-	private boolean isImpossibleToWin(Game game) {
+	private static boolean isImpossibleToWin(Game game) {
 		int stonesOnField = game.getPits().stream().filter((p) -> !p.isKalaha()).map((p) -> p.countStones()).reduce(0,
 				(x, y) -> x + y);
 		int kalahaPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).countStones();
@@ -213,7 +209,7 @@ public class GameLogic implements IGameLogic {
 		return false;
 	}
 
-	private boolean isOnePlayerFieldsEmpty(Game game) {
+	private static boolean isOnePlayerFieldsEmpty(Game game) {
 		int stonesOnFieldPlayerLeft = game.getPits().stream()
 				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerLeft()).mapToInt(Pit::getStones).sum();
 		int stonesOnFieldPlayerRight = game.getPits().stream()
@@ -227,7 +223,7 @@ public class GameLogic implements IGameLogic {
 		return false;
 	}
 
-	public void endGame(Game game) {
+	public static void endGame(Game game) {
 		int stonesOnFieldPlayerLeft = game.getPits().stream()
 				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerLeft()).mapToInt(Pit::grabAllStones)
 				.sum();
@@ -238,14 +234,15 @@ public class GameLogic implements IGameLogic {
 		BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).add(stonesOnFieldPlayerLeft);
 		BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).add(stonesOnFieldPlayerRight);
 		updatePlayersPoints(game);
+		setGameEndResult(game);
 	}
 
-	private GameStatus getNextTurnGameStatus(Game game) {
+	private static GameStatus getNextTurnGameStatus(Game game) {
 		return game.getCurrentPlayer().equals(game.getPlayerLeft()) ? GameStatus.PlayerRightTurn
 				: GameStatus.PlayerLeftTurn;
 	}
 
-	private void setGameEndResult(Game game) {
+	private static void setGameEndResult(Game game) {
 		if (game.getPlayerLeftPoints() > game.getPlayerRightPoints()) {
 			game.setGameStatus(GameStatus.PlayerLeftWins);
 		} else if (game.getPlayerLeftPoints() < game.getPlayerRightPoints()) {
@@ -255,7 +252,7 @@ public class GameLogic implements IGameLogic {
 		}
 	}
 
-	private Player getTurnPlayer(Game game) {
+	private static Player getTurnPlayer(Game game) {
 		return game.getGameStatus() == GameStatus.PlayerLeftTurn ? game.getPlayerLeft() : game.getPlayerRight();
 	}
 }

@@ -77,7 +77,6 @@ function updateGame(gameState) {
 }
 
 function enablePits(gameState) {
-
 	pitsEnabled = null;
 	kalahas = document.querySelectorAll(".kalaha");
 	kalahaP1 = document.querySelector(".kalaha-p1");
@@ -111,7 +110,6 @@ function enablePits(gameState) {
 
 allPits.forEach(pit => {
 	pit.addEventListener("click", function (e) {
-
 		let kalahaP1ValueBefore = document.querySelector(".kalaha-p1").innerText;
 		let kalahaP2ValueBefore = document.querySelector(".kalaha-p2").innerText;
 
@@ -155,4 +153,8 @@ function getQuerystring(key) {
 			return pair[1];
 		}
 	}
+}
+
+function getNumberFromPlayer(player) {
+	return player.replace( /^\D+/g, '');
 }

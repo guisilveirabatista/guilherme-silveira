@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import nl.guilhermesilveira.kalaha.exception.GameException;
 import nl.guilhermesilveira.kalaha.game.GameLogic;
-import nl.guilhermesilveira.kalaha.game.IGameLogic;
 import nl.guilhermesilveira.kalaha.model.Game;
 import nl.guilhermesilveira.kalaha.model.GameStatus;
 import nl.guilhermesilveira.kalaha.model.Move;
@@ -18,8 +17,6 @@ import nl.guilhermesilveira.kalaha.model.Pit;
 import nl.guilhermesilveira.kalaha.model.Player;
 
 public class GameTest {
-
-	private IGameLogic gameLogic = new GameLogic();
 
 	@Test
 	void testFirstMove() throws GameException {
@@ -31,7 +28,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(0);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -55,7 +52,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(8);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -79,7 +76,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(10);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -97,7 +94,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(0);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -114,7 +111,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(2);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		assertEquals(GameStatus.PlayerRightTurn, game.getGameStatus());
 	}
@@ -129,7 +126,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(4);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -151,7 +148,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(10);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -172,7 +169,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(5);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		// Check Kalaha 1
 		assertEquals(GameStatus.PlayerLeftWins, game.getGameStatus());
@@ -189,7 +186,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(12);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		// Check Kalaha 1
 		assertEquals(GameStatus.PlayerRightWins, game.getGameStatus());
@@ -206,7 +203,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(12);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		// Check Kalaha 1
 		assertEquals(GameStatus.Draw, game.getGameStatus());
@@ -222,7 +219,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(5);
 
-		Game retorno = gameLogic.makeMove(game, move);
+		Game retorno = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = retorno.getPits();
 
@@ -242,7 +239,7 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(5);
 
-		game = gameLogic.makeMove(game, move);
+		game = GameLogic.makeMove(game, move);
 
 		List<Pit> pits = game.getPits();
 
@@ -261,49 +258,49 @@ public class GameTest {
 		Move move = new Move();
 		move.setSelectedPit(0);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(null, move);
+			GameLogic.makeMove(null, move);
 		});
 
 		int[] mockPits = { 6, 6, 6, 6, 6, 6, 0, 6, 6, 6, 6, 6, 6, 0 };
 		Game game1 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game1, null);
+			GameLogic.makeMove(game1, null);
 		});
 
 		Game game2 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game2.setPits(null);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game2, move);
+			GameLogic.makeMove(game2, move);
 		});
 
 		Game game3 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game3.setPits(new ArrayList<Pit>());
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game3, move);
+			GameLogic.makeMove(game3, move);
 		});
 
 		Game game4 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game4.getPits().remove(13);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game4, move);
+			GameLogic.makeMove(game4, move);
 		});
 
 		Game game5 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		game5.setGameStatus(null);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game5, move);
+			GameLogic.makeMove(game5, move);
 		});
 
 		Game game6 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		move.setSelectedPit(null);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game6, move);
+			GameLogic.makeMove(game6, move);
 		});
 
 		Game game7 = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 		move.setSelectedPit(100);
 		Assertions.assertThrows(GameException.class, () -> {
-			gameLogic.makeMove(game7, move);
+			GameLogic.makeMove(game7, move);
 		});
 	}
 

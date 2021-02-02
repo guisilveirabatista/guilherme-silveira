@@ -22,6 +22,29 @@ public class BoardLogic {
 		return game.getPits();
 	}
 
+	public static Pit getNextPit(Pit currentPit, List<Pit> pits) {
+		int indexCurrentPit = pits.indexOf(currentPit);
+		if (indexCurrentPit == (pits.size() - 1)) {
+			return pits.get(0);
+		} else {
+			return pits.get(indexCurrentPit + 1);
+		}
+	}
+
+	public static Pit getOppositePit(Pit currentPit, List<Pit> pits) {
+		// Check if pit is Kalaha
+		if (currentPit.isKalaha()) {
+			return null;
+		}
+		int currentIndex = pits.indexOf(currentPit);
+		int oppositeIndex = (pits.size() - 2) - currentIndex;
+		return pits.get(oppositeIndex);
+	}
+
+	public static Pit getPlayerKalaha(Player player, List<Pit> pits) {
+		return pits.stream().filter(p -> p.getPlayer() == player && p.isKalaha() == true).findFirst().orElse(null);
+	}
+
 	private static void assignKalahas(Game game) {
 		// Kalaha Player 1
 		Pit kalahaLeft = game.getPits().get((game.getPits().size() / 2) - 1);
@@ -50,29 +73,6 @@ public class BoardLogic {
 
 	private static void pourStones(int stones, List<Pit> pits) {
 		pits.stream().filter(p -> !p.isKalaha()).forEach(p -> p.add(stones));
-	}
-
-	public static Pit getNextPit(Pit currentPit, List<Pit> pits) {
-		int indexCurrentPit = pits.indexOf(currentPit);
-		if (indexCurrentPit == (pits.size() - 1)) {
-			return pits.get(0);
-		} else {
-			return pits.get(indexCurrentPit + 1);
-		}
-	}
-
-	public static Pit getOppositePit(Pit currentPit, List<Pit> pits) {
-		// Check if pit is Kalaha
-		if (currentPit.isKalaha()) {
-			return null;
-		}
-		int currentIndex = pits.indexOf(currentPit);
-		int oppositeIndex = (pits.size() - 2) - currentIndex;
-		return pits.get(oppositeIndex);
-	}
-
-	public static Pit getPlayerKalaha(Player player, List<Pit> pits) {
-		return pits.stream().filter(p -> p.getPlayer() == player && p.isKalaha() == true).findFirst().orElse(null);
 	}
 
 }
