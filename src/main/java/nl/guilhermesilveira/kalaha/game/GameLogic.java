@@ -193,16 +193,16 @@ public class GameLogic {
 	private static boolean isImpossibleToWin(Game game) {
 		int stonesOnField = game.getPits().stream().filter((p) -> !p.isKalaha()).map((p) -> p.countStones()).reduce(0,
 				(x, y) -> x + y);
-		int kalahaPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).countStones();
-		int kalahaPlayerRight = BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).countStones();
+		int stonesOnFieldPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).countStones();
+		int stonesOnFieldPlayerRight = BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).countStones();
 
 		// impossible for Player Right
-		if (kalahaPlayerLeft > (stonesOnField + kalahaPlayerRight)) {
+		if (stonesOnFieldPlayerLeft > (stonesOnField + stonesOnFieldPlayerRight)) {
 			return true;
 		}
 
 		// impossible for Player Left
-		if (kalahaPlayerRight > (stonesOnField + kalahaPlayerLeft)) {
+		if (stonesOnFieldPlayerRight > (stonesOnField + stonesOnFieldPlayerLeft)) {
 			return true;
 		}
 
