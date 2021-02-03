@@ -73,23 +73,40 @@ public class GameLogic {
 	private static void validateGameAndMoveSetup(Game game, Move move) throws GameException {
 
 		// Validates Game and Move
-		if (game == null || move == null) {
-			throw new GameException("Game error! Game not found or move not created!");
-		}
-		// Validates Pit List
-		if (game.getPits() == null || game.getPits().size() < BOARD_SIZE) {
-			throw new GameException("Pit state invalid!");
-		}
+		validateGameAndMove(game, move);
 
-		// Validate Turn
-		List<String> listEnumGameStatus = Stream.of(GameStatus.values()).map(GameStatus::name)
-				.collect(Collectors.toList());
-		if (game.getGameStatus() == null || !listEnumGameStatus.contains(game.getGameStatus().toString())) {
-			throw new GameException("Turn info invalid!");
-		}
+		// Validates Pit List
+		validatePitList(game.getPits(), game.getBoardSize());
+
+		// Validate Game Status
+		validateGameStatus(game.getGameStatus());
 
 		// Validates Selected Pit
-		if (move.getSelectedPit() == null || move.getSelectedPit() > game.getPits().size()) {
+		validateSelectedPit(move.getSelectedPit(), game.getPits());
+	}
+
+	private static void validateGameAndMove(Game game, Move move) throws GameException {
+		if (game == null || game.getId() == null || game.getId() == 0 || move == null || move.getGameId() == null) {
+			throw new GameException("Game error! Game not created or move not created!");
+		}
+	}
+
+	private static void validatePitList(List<Pit> pits, int boardSize) throws GameException {
+		if (pits == null || pits.size() < boardSize) {
+			throw new GameException("Pit state invalid!");
+		}
+	}
+
+	private static void validateGameStatus(GameStatus gameStatus) throws GameException {
+		List<String> listEnumGameStatus = Stream.of(GameStatus.values()).map(GameStatus::name)
+				.collect(Collectors.toList());
+		if (gameStatus == null || !listEnumGameStatus.contains(gameStatus.toString())) {
+			throw new GameException("Turn info invalid!");
+		}
+	}
+
+	private static void validateSelectedPit(Integer selectedPit, List<Pit> pits) throws GameException {
+		if (selectedPit == null || selectedPit > pits.size()) {
 			throw new GameException("Pit invalid!");
 		}
 	}

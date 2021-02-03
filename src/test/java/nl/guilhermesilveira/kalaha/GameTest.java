@@ -26,6 +26,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(0);
 
 		game = GameLogic.makeMove(game, move);
@@ -50,6 +51,7 @@ public class GameTest {
 		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(8);
 
 		game = GameLogic.makeMove(game, move);
@@ -74,6 +76,7 @@ public class GameTest {
 		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(10);
 
 		game = GameLogic.makeMove(game, move);
@@ -92,6 +95,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(0);
 
 		game = GameLogic.makeMove(game, move);
@@ -109,6 +113,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(2);
 
 		game = GameLogic.makeMove(game, move);
@@ -124,6 +129,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(4);
 
 		game = GameLogic.makeMove(game, move);
@@ -146,6 +152,7 @@ public class GameTest {
 		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(10);
 
 		game = GameLogic.makeMove(game, move);
@@ -167,6 +174,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(5);
 
 		game = GameLogic.makeMove(game, move);
@@ -184,6 +192,7 @@ public class GameTest {
 		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(12);
 
 		game = GameLogic.makeMove(game, move);
@@ -201,6 +210,7 @@ public class GameTest {
 		game.setCurrentPlayer(Player.Player2);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(12);
 
 		game = GameLogic.makeMove(game, move);
@@ -217,6 +227,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(5);
 
 		Game retorno = GameLogic.makeMove(game, move);
@@ -237,6 +248,7 @@ public class GameTest {
 		Game game = GameFactory.createGame(mockPits, GameStatus.PlayerLeftTurn);
 
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(5);
 
 		game = GameLogic.makeMove(game, move);
@@ -256,6 +268,7 @@ public class GameTest {
 	@Test
 	void testValidNewGame() {
 		Move move = new Move();
+		move.setGameId(Long.valueOf(1));
 		move.setSelectedPit(0);
 		Assertions.assertThrows(GameException.class, () -> {
 			GameLogic.makeMove(null, move);

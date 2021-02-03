@@ -27,7 +27,7 @@ public class GameFactory {
 		pits.get(13).setIsKalaha(true);
 
 		Game game = new Game();
-		game.setId((long) 1);
+		game.setId(Long.valueOf(1));
 		game.setUser(null);
 		game.setPlayerLeftPoints(0);
 		game.setPlayerRightPoints(0);
