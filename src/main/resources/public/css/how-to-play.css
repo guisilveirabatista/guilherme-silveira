@@ -25,6 +25,8 @@ body, html {
     background-image: url(/img/background.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 .how-to-play {
@@ -55,7 +57,9 @@ h1 {
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    position: absolute;left: 0;top:100px;
+    position: absolute;
+    left: 0;
+    top: 100px;
 }
 
 a:link {
