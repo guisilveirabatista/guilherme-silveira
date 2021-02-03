@@ -45,6 +45,22 @@ public class BoardLogic {
 		return pits.stream().filter(p -> p.getPlayer() == player && p.isKalaha() == true).findFirst().orElse(null);
 	}
 
+	public static int countStonesOnPlayerField(Player player, List<Pit> pits) {
+		return pits.stream().filter((p) -> !p.isKalaha() && p.getPlayer() == player).mapToInt(Pit::getStones).sum();
+	}
+
+	public static int countAllStonesOnField(List<Pit> pits) {
+		return pits.stream().filter((p) -> !p.isKalaha()).map((p) -> p.countStones()).reduce(0, (x, y) -> x + y);
+	}
+
+	public static int countStonesOnPlayerKalaha(Player player, List<Pit> pits) {
+		return getPlayerKalaha(player, pits).countStones();
+	}
+
+	public static int grabAllStonesFromPlayerField(Player player, List<Pit> pits) {
+		return pits.stream().filter((p) -> !p.isKalaha() && p.getPlayer() == player).mapToInt(Pit::grabAllStones).sum();
+	}
+
 	private static void assignKalahas(Game game) {
 		// Kalaha Player 1
 		Pit kalahaLeft = game.getPits().get((game.getPits().size() / 2) - 1);

@@ -191,18 +191,17 @@ public class GameLogic {
 	}
 
 	private static boolean isImpossibleToWin(Game game) {
-		int stonesOnField = game.getPits().stream().filter((p) -> !p.isKalaha()).map((p) -> p.countStones()).reduce(0,
-				(x, y) -> x + y);
-		int stonesOnFieldPlayerLeft = BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).countStones();
-		int stonesOnFieldPlayerRight = BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).countStones();
+		int allStonesOnField = BoardLogic.countAllStonesOnField(game.getPits());
+		int stonesOnKalahaPlayerLeft = BoardLogic.countStonesOnPlayerKalaha(game.getPlayerLeft(), game.getPits());
+		int stonesOnKalahaPlayerRight = BoardLogic.countStonesOnPlayerKalaha(game.getPlayerRight(), game.getPits());
 
 		// impossible for Player Right
-		if (stonesOnFieldPlayerLeft > (stonesOnField + stonesOnFieldPlayerRight)) {
+		if (stonesOnKalahaPlayerLeft > (allStonesOnField + stonesOnKalahaPlayerRight)) {
 			return true;
 		}
 
 		// impossible for Player Left
-		if (stonesOnFieldPlayerRight > (stonesOnField + stonesOnFieldPlayerLeft)) {
+		if (stonesOnKalahaPlayerRight > (allStonesOnField + stonesOnKalahaPlayerLeft)) {
 			return true;
 		}
 
@@ -210,10 +209,9 @@ public class GameLogic {
 	}
 
 	private static boolean isOnePlayerFieldsEmpty(Game game) {
-		int stonesOnFieldPlayerLeft = game.getPits().stream()
-				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerLeft()).mapToInt(Pit::getStones).sum();
-		int stonesOnFieldPlayerRight = game.getPits().stream()
-				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerRight()).mapToInt(Pit::getStones).sum();
+		int stonesOnFieldPlayerLeft = BoardLogic.countStonesOnPlayerField(game.getPlayerLeft(), game.getPits());
+		int stonesOnFieldPlayerRight = BoardLogic.countStonesOnPlayerField(game.getPlayerRight(), game.getPits());
+
 		if (stonesOnFieldPlayerLeft == 0) {
 			return true;
 		}
@@ -224,15 +222,14 @@ public class GameLogic {
 	}
 
 	public static void endGame(Game game) {
-		int stonesOnFieldPlayerLeft = game.getPits().stream()
-				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerLeft()).mapToInt(Pit::grabAllStones)
-				.sum();
-		int stonesOnFieldPlayerRight = game.getPits().stream()
-				.filter((p) -> !p.isKalaha() && p.getPlayer() == game.getPlayerRight()).mapToInt(Pit::grabAllStones)
-				.sum();
+		int grabbedStonesFromFieldPlayerLeft = BoardLogic.grabAllStonesFromPlayerField(game.getPlayerLeft(),
+				game.getPits());
+		int grabbedStonesFromFieldPlayerRight = BoardLogic.grabAllStonesFromPlayerField(game.getPlayerRight(),
+				game.getPits());
 
-		BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).add(stonesOnFieldPlayerLeft);
-		BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).add(stonesOnFieldPlayerRight);
+		BoardLogic.getPlayerKalaha(game.getPlayerLeft(), game.getPits()).add(grabbedStonesFromFieldPlayerLeft);
+		BoardLogic.getPlayerKalaha(game.getPlayerRight(), game.getPits()).add(grabbedStonesFromFieldPlayerRight);
+
 		updatePlayersPoints(game);
 		setGameEndResult(game);
 	}
