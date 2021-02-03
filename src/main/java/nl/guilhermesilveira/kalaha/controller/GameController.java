@@ -31,9 +31,6 @@ public class GameController {
 		GameDto gameDto = null;
 		try {
 			gameDto = this.gameService.newGame();
-			if (gameDto == null) {
-				return ResponseEntity.notFound().build();
-			}
 			return ResponseEntity.ok(gameDto);
 		} catch (GameException e) {
 			System.out.println(e.getMessage());
