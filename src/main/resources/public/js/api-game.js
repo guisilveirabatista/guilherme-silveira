@@ -1,6 +1,6 @@
 const newGame = (userToken) => {
     return fetch('/kalaha', {
-        method: 'get',
+        method: 'post',
         // withCredentials: true,
         // credentials: 'include',
         headers: {
@@ -33,7 +33,7 @@ const makeMove = (userToken, gameId, selectedPit) => {
         selectedPit: selectedPit
     });
     return fetch('/kalaha', {
-        method: 'post',
+        method: 'put',
         // withCredentials: true,
         // credentials: 'include',
         headers: {
