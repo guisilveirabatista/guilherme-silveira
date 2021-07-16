@@ -53,13 +53,14 @@ h1 {
 }
 
 .img-book {
+    left: 0;
+    top: 100px;
+    width: 20%;
+    position: absolute;
     animation-name: floating;
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-    position: absolute;
-    left: 0;
-    top: 100px;
 }
 
 a:link {

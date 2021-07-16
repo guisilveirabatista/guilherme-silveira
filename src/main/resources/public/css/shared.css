@@ -51,3 +51,29 @@ a:active {
     left: 20px;
     top: 10px;
 }
+
+.torch-left {
+    width: 400px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.torch-right {
+    width: 400px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+@media (max-width: 1000px) {
+    .torch-left {
+        width: 50px;
+    }
+    
+    .torch-right {
+        width: 50px;
+    }
+}
