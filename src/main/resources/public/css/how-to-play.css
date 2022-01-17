@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'Alladin';
+    src: url('font/aladdin.ttf');
+}
+
+@keyframes floating {
+    0% {
+        transform: translate(0, 0px);
+    }
+    50% {
+        transform: translate(0, 15px);
+    }
+    100% {
+        transform: translate(0, -0px);
+    }
+}
+
+body, html {
+    margin: 0;
+    color: white;
+    text-shadow: 10px 10px 10px black;
+    font-family: 'Alladin';
+    font-size: 20px;
+    background-color: black;
+    background-image: url(/img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.how-to-play {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+p {
+    text-align: justify;
+    text-shadow: 10px 10px 10px black
+}
+
+table td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+h1 {
+    padding-top: 10px;
+    margin-top: 50px;
+}
+
+.img-book {
+    left: 0;
+    top: 100px;
+    width: 20%;
+    position: absolute;
+    animation-name: floating;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+a:link {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none!important;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none!important;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 10px 10px 10px black!important;
+}
+
+a:active {
+    text-decoration: none;
+    color: #fff;
+    text-shadow: none!important;
+}
+
+.div-go-back {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    font-family: 'Alladin';
+    font-size: 40px;
+}
